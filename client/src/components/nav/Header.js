@@ -21,6 +21,10 @@ const Header = () => {
 
     const handleClick = (e) => {
         setCurrent(e.key);
+    };
+
+    const logout = () => {
+        firebase.auth().signOut();
 
         disptach({
             type: "LOGOUT",
@@ -28,10 +32,6 @@ const Header = () => {
         });
 
         history.push("/login");
-    };
-
-    const logout = () => {
-        firebase.auth().signOut();
     };
 
     return (

@@ -32,7 +32,7 @@ const App = () => {
 
         // cleanup
         return () => unsubscribe();
-    }, []);
+    });
 
     return (
         <>
