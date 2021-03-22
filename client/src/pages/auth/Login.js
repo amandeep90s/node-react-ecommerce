@@ -119,19 +119,18 @@ const Login = ({ history }) => {
         <div className="container p-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3">
-                    <h4>
-                        {loading ? (
-                            <h4>
-                                <Spin
-                                    indicator={<LoadingOutlined />}
-                                    className="mr-2"
-                                />
-                                Loading...
-                            </h4>
-                        ) : (
-                            <h4>Login</h4>
-                        )}
-                    </h4>
+                    {loading ? (
+                        <h4>
+                            <Spin
+                                indicator={<LoadingOutlined />}
+                                className="mr-2"
+                            />
+                            Loading...
+                        </h4>
+                    ) : (
+                        <h4>Login</h4>
+                    )}
+
                     {loginForm()}
                 </div>
             </div>
