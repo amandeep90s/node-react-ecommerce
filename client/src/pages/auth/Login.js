@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth, googleAuthProvider } from "../../firebase";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Spin } from "antd";
 import {
@@ -100,18 +101,6 @@ const Login = ({ history }) => {
             >
                 Login with Email/Password
             </Button>
-
-            <Button
-                onClick={googleLogin}
-                type="danger"
-                className="mb-3"
-                block
-                shape="round"
-                icon={<GoogleOutlined />}
-                size="large"
-            >
-                Login with Google
-            </Button>
         </form>
     );
 
@@ -132,6 +121,25 @@ const Login = ({ history }) => {
                     )}
 
                     {loginForm()}
+
+                    <Button
+                        onClick={googleLogin}
+                        type="danger"
+                        className="mb-3"
+                        block
+                        shape="round"
+                        icon={<GoogleOutlined />}
+                        size="large"
+                    >
+                        Login with Google
+                    </Button>
+
+                    <Link
+                        to="/forgot/password"
+                        className="float-right text-danger"
+                    >
+                        Forgot Password
+                    </Link>
                 </div>
             </div>
         </div>

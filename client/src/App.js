@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import RegisterComplete from "./pages/auth/RegisterComplete";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -46,6 +47,11 @@ const App = () => {
                     exact
                     path="/register/complete"
                     component={RegisterComplete}
+                />
+                <Route
+                    exact
+                    path="/forgot/password"
+                    component={ForgotPassword}
                 />
             </Switch>
         </>
