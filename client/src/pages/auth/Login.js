@@ -9,6 +9,20 @@ import {
     LoadingOutlined,
     MailOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
+
+const createOrUpdateUser = async (authtoken) => {
+    return await axios.post(
+        `${process.env.REACT_APP_API_URL}/create-or-update-user`,
+        {},
+        {
+            headers: {
+                authtoken,
+            },
+        }
+    );
+};
+
 const Login = ({ history }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,6 +47,12 @@ const Login = ({ history }) => {
             );
             const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
+
+            createOrUpdateUser(idTokenResult.token)
+                .then((response) =>
+                    console.log("Create or update response", response)
+                )
+                .catch((error) => console.error(error));
 
             dispatch({
                 type: "LOGGED_IN_USER",
