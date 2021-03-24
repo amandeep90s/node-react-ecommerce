@@ -15,14 +15,20 @@ const Login = ({ history }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-
     const { user } = useSelector((state) => ({ ...state }));
+    let dispatch = useDispatch();
 
     useEffect(() => {
         if (user && user.token) history.push("/");
     }, [history, user]);
 
-    let dispatch = useDispatch();
+    const roleBasedRedirect = (res) => {
+        if (res.data.role === "admin") {
+            history.push("/admin/dashboard");
+        } else {
+            history.push("/user/history");
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,10 +54,9 @@ const Login = ({ history }) => {
                             _id: response.data._id,
                         },
                     });
+                    roleBasedRedirect(response);
                 })
                 .catch((error) => console.error(error));
-
-            history.push("/");
         } catch (error) {
             toast.error(error.message);
             console.error(error);
@@ -77,10 +82,9 @@ const Login = ({ history }) => {
                                 _id: response.data._id,
                             },
                         });
+                        roleBasedRedirect(response);
                     })
                     .catch((error) => console.error(error));
-
-                history.push("/");
             })
             .catch((error) => {
                 toast.error(error.message);
