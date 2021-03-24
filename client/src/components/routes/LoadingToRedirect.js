@@ -21,10 +21,10 @@ const LoadingToRedirect = () => {
 
     return (
         <div className="container p-5 text-center">
-            <p>
+            <div>
                 <Spin indicator={<LoadingOutlined />} className="mr-2" />
                 Redirecting you in {count} seconds
-            </p>
+            </div>
         </div>
     );
 };
