@@ -10,14 +10,15 @@ const app = express();
 
 // db
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB Connected"))
-  .catch((error) => console.log("DB Connection error", error));
+    .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
+    .then(() => console.log("DB Connected"))
+    .catch((error) => console.log("DB Connection error", error));
 
 // middlewares
 app.use(morgan("dev"));
