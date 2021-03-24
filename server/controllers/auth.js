@@ -13,7 +13,7 @@ exports.createOrUpdateUser = async (req, res) => {
         res.json(user);
     } else {
         const newUser = await new User({
-            name,
+            name: email.split("@")[0],
             email,
             picture,
         }).save();

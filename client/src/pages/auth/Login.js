@@ -9,19 +9,7 @@ import {
     LoadingOutlined,
     MailOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
-
-const createOrUpdateUser = async (authtoken) => {
-    return await axios.post(
-        `${process.env.REACT_APP_API_URL}/create-or-update-user`,
-        {},
-        {
-            headers: {
-                authtoken,
-            },
-        }
-    );
-};
+import { createOrUpdateUser } from "../../functions/auth";
 
 const Login = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -49,18 +37,19 @@ const Login = ({ history }) => {
             const idTokenResult = await user.getIdTokenResult();
 
             createOrUpdateUser(idTokenResult.token)
-                .then((response) =>
-                    console.log("Create or update response", response)
-                )
+                .then((response) => {
+                    dispatch({
+                        type: "LOGGED_IN_USER",
+                        payload: {
+                            name: response.data.name,
+                            email: response.data.email,
+                            token: idTokenResult.token,
+                            role: response.data.role,
+                            _id: response.data._id,
+                        },
+                    });
+                })
                 .catch((error) => console.error(error));
-
-            dispatch({
-                type: "LOGGED_IN_USER",
-                payload: {
-                    email: user.email,
-                    token: idTokenResult.token,
-                },
-            });
 
             history.push("/");
         } catch (error) {
@@ -76,13 +65,20 @@ const Login = ({ history }) => {
                 const { user } = result;
                 const idTokenResult = await user.getIdTokenResult();
 
-                dispatch({
-                    type: "LOGGED_IN_USER",
-                    payload: {
-                        email: user.email,
-                        token: idTokenResult.token,
-                    },
-                });
+                createOrUpdateUser(idTokenResult.token)
+                    .then((response) => {
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                name: response.data.name,
+                                email: response.data.email,
+                                token: idTokenResult.token,
+                                role: response.data.role,
+                                _id: response.data._id,
+                            },
+                        });
+                    })
+                    .catch((error) => console.error(error));
 
                 history.push("/");
             })
@@ -123,8 +119,7 @@ const Login = ({ history }) => {
                 shape="round"
                 icon={<MailOutlined />}
                 size="large"
-                disabled={!email || password.length < 6}
-            >
+                disabled={!email || password.length < 6}>
                 Login with Email/Password
             </Button>
         </form>
@@ -155,15 +150,13 @@ const Login = ({ history }) => {
                         block
                         shape="round"
                         icon={<GoogleOutlined />}
-                        size="large"
-                    >
+                        size="large">
                         Login with Google
                     </Button>
 
                     <Link
                         to="/forgot/password"
-                        className="float-right text-danger"
-                    >
+                        className="float-right text-danger">
                         Forgot Password
                     </Link>
                 </div>
