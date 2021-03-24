@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
+import { currentUser } from "./functions/auth";
 
 import Header from "./components/nav/Header";
 import Home from "./pages/Home";
@@ -21,13 +22,20 @@ const App = () => {
             if (user) {
                 const idTokenResult = await user.getIdTokenResult();
 
-                dispatch({
-                    type: "LOGGED_IN_USER",
-                    payload: {
-                        email: user.email,
-                        token: idTokenResult.token,
-                    },
-                });
+                currentUser(idTokenResult.token)
+                    .then((response) => {
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                name: response.data.name,
+                                email: response.data.email,
+                                token: idTokenResult.token,
+                                role: response.data.role,
+                                _id: response.data._id,
+                            },
+                        });
+                    })
+                    .catch((error) => console.error(error));
             }
         });
 
