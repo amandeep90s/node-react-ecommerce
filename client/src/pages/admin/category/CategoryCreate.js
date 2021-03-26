@@ -18,11 +18,11 @@ import CategoryFrom from "../../../components/forms/CategoryForm";
 
 const CategoryCreate = () => {
     const { user } = useSelector((state) => ({ ...state }));
-
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
-
     const [categories, setCategories] = useState([]);
+    // Searching / Filtering
+    const [keyword, setKeyword] = useState("");
 
     useEffect(() => {
         loadCategories();
@@ -69,6 +69,13 @@ const CategoryCreate = () => {
         }
     };
 
+    const handleSearchChange = (e) => {
+        e.preventDefault();
+        setKeyword(e.target.value.toLowerCase());
+    };
+
+    const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+
     return (
         <div className="container-fluid py-2">
             <div className="row">
@@ -95,20 +102,30 @@ const CategoryCreate = () => {
                         loading={loading}
                     />
 
+                    <input
+                        type="search"
+                        placeholder="Filter"
+                        value={keyword}
+                        onChange={handleSearchChange}
+                        className="form-control mb-4"
+                    />
+
                     <hr />
 
-                    {categories.map((c) => (
+                    {categories.filter(searched(keyword)).map((c) => (
                         <div className="alert alert-secondary" key={c._id}>
                             {c.name}
                             <span
                                 onClick={() => handleRemove(c.slug)}
-                                className="btn btn-sm float-right text-danger py-0">
+                                className="btn btn-sm float-right text-danger py-0"
+                            >
                                 <DeleteOutlined />
                             </span>
 
                             <Link
                                 to={`/admin/category/${c.slug}`}
-                                className="float-right mr-3">
+                                className="float-right mr-3"
+                            >
                                 <span className="btn btn-sm float-right text-warning py-0">
                                     <EditOutlined />
                                 </span>
