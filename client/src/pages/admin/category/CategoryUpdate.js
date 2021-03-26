@@ -6,6 +6,7 @@ import { getCategory, updateCategory } from "../../../functions/category";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
+import CategoryFrom from "../../../components/forms/CategoryForm";
 
 const CategoryUpdate = ({ history }) => {
     const { user } = useSelector((state) => ({ ...state }));
@@ -21,30 +22,6 @@ const CategoryUpdate = ({ history }) => {
 
     const loadCategory = (slug) =>
         getCategory(slug).then((c) => setName(c.data.name));
-
-    const categoryForm = () => (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <input
-                    type="text"
-                    id="name"
-                    className="form-control"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter category name"
-                    autoFocus
-                    required
-                />
-            </div>
-
-            <button
-                type="submit"
-                className="btn btn-primary btn-raised"
-                disabled={!name || name.length < 2 || loading}>
-                Save
-            </button>
-        </form>
-    );
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -83,7 +60,12 @@ const CategoryUpdate = ({ history }) => {
                         <h4>Update Category</h4>
                     )}
 
-                    {categoryForm()}
+                    <CategoryFrom
+                        handleSubmit={handleSubmit}
+                        name={name}
+                        setName={setName}
+                        loading={loading}
+                    />
                 </div>
             </div>
         </div>

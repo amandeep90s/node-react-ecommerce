@@ -14,6 +14,7 @@ import {
     DeleteOutlined,
     LoadingOutlined,
 } from "@ant-design/icons";
+import CategoryFrom from "../../../components/forms/CategoryForm";
 
 const CategoryCreate = () => {
     const { user } = useSelector((state) => ({ ...state }));
@@ -29,30 +30,6 @@ const CategoryCreate = () => {
 
     const loadCategories = () =>
         getCategories().then((c) => setCategories(c.data));
-
-    const categoryForm = () => (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <input
-                    type="text"
-                    id="name"
-                    className="form-control"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter category name"
-                    autoFocus
-                    required
-                />
-            </div>
-
-            <button
-                type="submit"
-                className="btn btn-primary btn-raised"
-                disabled={!name || name.length < 2 || loading}>
-                Save
-            </button>
-        </form>
-    );
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -111,7 +88,12 @@ const CategoryCreate = () => {
                         <h4>Create Category</h4>
                     )}
 
-                    {categoryForm()}
+                    <CategoryFrom
+                        handleSubmit={handleSubmit}
+                        name={name}
+                        setName={setName}
+                        loading={loading}
+                    />
 
                     <hr />
 
