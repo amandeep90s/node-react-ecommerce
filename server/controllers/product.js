@@ -9,10 +9,9 @@ exports.create = async (req, res) => {
         res.json(product);
     } catch (error) {
         console.error(error);
-        // res.status(400).send("Create product failed");
         res.status(400).json({
             error:
-                message.name === "MongoError" && error.code === 11000
+                error.name === "MongoError" && error.code === 11000
                     ? "Product already exists !"
                     : error.message,
         });
