@@ -6,7 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { createProduct } from "../../../functions/product";
 import AdminNav from "../../../components/nav/AdminNav";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
-// import LocalSearch from "../../../components/forms/LocalSearch";
+import { getCategories } from "../../../functions/category";
 
 const initialState = {
     title: "Macbook PRO",
@@ -24,16 +24,18 @@ const initialState = {
     brand: "Apple",
 };
 const ProductCreate = () => {
+    const { user } = useSelector((state) => ({ ...state }));
     const [values, setValues] = useState(initialState);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        return () => {
-            "true";
-        };
+        loadCategories();
     }, []);
 
-    const { user } = useSelector((state) => ({ ...state }));
+    const loadCategories = () =>
+        getCategories().then((c) =>
+            setValues({ ...values, categories: c.data })
+        );
 
     const handleSubmit = (e) => {
         e.preventDefault();

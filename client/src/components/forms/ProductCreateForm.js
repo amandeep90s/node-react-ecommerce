@@ -7,10 +7,10 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
         price,
         categories,
         category,
-        sub_categories,
+        // sub_categories,
         shipping,
         quantity,
-        images,
+        // images,
         colors,
         color,
         brands,
@@ -112,6 +112,25 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
                             {b}
                         </option>
                     ))}
+                </select>
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="category">Category</label>
+                <select
+                    name="category"
+                    id="category"
+                    className="form-control"
+                    onChange={handleChange}
+                    value={category}
+                    required>
+                    <option value="">Please select</option>
+                    {categories.length > 0 &&
+                        categories.map((c) => (
+                            <option key={c._id} value={c._id}>
+                                {c.name}
+                            </option>
+                        ))}
                 </select>
             </div>
 
