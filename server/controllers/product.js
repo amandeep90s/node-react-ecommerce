@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
             error:
                 error.name === "MongoError" && error.code === 11000
                     ? "Product already exists !"
-                    : error.message,
+                    : "Create product failed !",
         });
     }
 };

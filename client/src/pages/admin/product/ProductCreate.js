@@ -12,8 +12,7 @@ const initialState = {
     title: "Macbook PRO",
     description: "This is the best apple product",
     price: "45000",
-    categories: [],
-    category: "",
+    category: "select",
     sub_categories: [],
     shipping: "Yes",
     quantity: "50",
@@ -26,18 +25,17 @@ const initialState = {
 const ProductCreate = () => {
     const { user } = useSelector((state) => ({ ...state }));
     const [values, setValues] = useState(initialState);
-    const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
     const [subOptions, setSubOptions] = useState([]);
     const [showSub, setShowSub] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        const loadCategories = () =>
+            getCategories().then((c) => setCategories(c.data));
+
         loadCategories();
     }, []);
-
-    const loadCategories = () =>
-        getCategories().then((c) =>
-            setValues({ ...values, categories: c.data })
-        );
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,8 +48,7 @@ const ProductCreate = () => {
                     title: "",
                     description: "",
                     price: "",
-                    categories: [],
-                    category: "",
+                    category: "select",
                     sub_categories: [],
                     shipping: "",
                     quantity: "",
@@ -59,7 +56,7 @@ const ProductCreate = () => {
                     color: "",
                     brand: "",
                 });
-
+                setSubOptions([]);
                 setLoading(false);
             })
             .catch((error) => {
@@ -75,7 +72,7 @@ const ProductCreate = () => {
 
     const handleCategoryChange = (e) => {
         e.preventDefault();
-        setValues({ ...values, category: e.target.value });
+        setValues({ ...values, sub_categories: [], category: e.target.value });
         getSubCategories(e.target.value)
             .then((res) => {
                 setSubOptions(res.data);
@@ -113,6 +110,8 @@ const ProductCreate = () => {
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                         handleCategoryChange={handleCategoryChange}
+                        categories={categories}
+                        setValues={setValues}
                         values={values}
                         showSub={showSub}
                         subOptions={subOptions}
