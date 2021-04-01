@@ -2,25 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Spin } from "antd";
-import { LayoutOutlined, LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import { createProduct } from "../../../functions/product";
 import AdminNav from "../../../components/nav/AdminNav";
-import LocalSearch from "../../../components/forms/LocalSearch";
+// import LocalSearch from "../../../components/forms/LocalSearch";
 
 const initialState = {
-    title: "",
-    description: "",
-    price: "",
+    title: "Macbook PRO",
+    description: "This is the best apple product",
+    price: "45000",
     categories: [],
     category: "",
     sub_categories: [],
-    shipping: "",
-    quantity: "",
+    shipping: "Yes",
+    quantity: "50",
     images: [],
     colors: ["Black", "Brown", "Silver", "White", "Blue"],
     brands: ["Microsoft", "Apple", "Dell", "Lenovo", "Asus"],
-    color: "",
-    brand: "",
+    color: "White",
+    brand: "Apple",
 };
 const ProductCreate = () => {
     const [values, setValues] = useState(initialState);
@@ -30,17 +30,23 @@ const ProductCreate = () => {
         title,
         description,
         price,
-        categories,
-        category,
-        sub_categories,
+        // categories,
+        // category,
+        // sub_categories,
         shipping,
         quantity,
-        images,
+        // images,
         colors,
         color,
         brands,
         brand,
     } = values;
+
+    useEffect(() => {
+        return () => {
+            "true";
+        };
+    }, []);
 
     const { user } = useSelector((state) => ({ ...state }));
 
@@ -49,15 +55,31 @@ const ProductCreate = () => {
         setLoading(true);
         createProduct(values, user.token)
             .then((res) => {
-                console.log(res);
+                toast.success(`"${title}" create successfully.`);
+                setValues({
+                    ...values,
+                    title: "",
+                    description: "",
+                    price: "",
+                    categories: [],
+                    category: "",
+                    sub_categories: [],
+                    shipping: "",
+                    quantity: "",
+                    images: [],
+                    color: "",
+                    brand: "",
+                });
+
                 setLoading(false);
             })
             .catch((error) => {
                 console.error(error);
                 setLoading(false);
-                if (error.response.status === 400) {
-                    toast.error(error.response.data);
-                }
+                // if (error.response.status === 400) {
+                //     toast.error(error.response.data);
+                // }
+                toast.error(error.response.data.message);
             });
     };
 
@@ -76,7 +98,7 @@ const ProductCreate = () => {
                     {loading ? (
                         <h4>
                             <Spin
-                                indicator={<LayoutOutlined />}
+                                indicator={<LoadingOutlined />}
                                 className="mr-2"
                             />
                             Loading...
@@ -94,7 +116,7 @@ const ProductCreate = () => {
                                 name="title"
                                 id="title"
                                 className="form-control"
-                                value={values.title}
+                                value={title}
                                 onChange={handleChange}
                             />
                         </div>
@@ -106,7 +128,7 @@ const ProductCreate = () => {
                                 name="description"
                                 id="description"
                                 className="form-control"
-                                value={values.description}
+                                value={description}
                                 onChange={handleChange}
                             />
                         </div>
@@ -118,7 +140,7 @@ const ProductCreate = () => {
                                 name="price"
                                 id="price"
                                 className="form-control"
-                                value={values.price}
+                                value={price}
                                 onChange={handleChange}
                             />
                         </div>
@@ -130,7 +152,8 @@ const ProductCreate = () => {
                                 id="shipping"
                                 className="form-control"
                                 onChange={handleChange}
-                                value={shipping}>
+                                value={shipping}
+                            >
                                 <option value="">Select</option>
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
@@ -144,7 +167,7 @@ const ProductCreate = () => {
                                 name="quantity"
                                 id="quantity"
                                 className="form-control"
-                                value={values.quantity}
+                                value={quantity}
                                 onChange={handleChange}
                             />
                         </div>
@@ -156,7 +179,8 @@ const ProductCreate = () => {
                                 id="color"
                                 className="form-control"
                                 onChange={handleChange}
-                                value={color}>
+                                value={color}
+                            >
                                 <option value="">Please Select</option>
                                 {colors.map((c) => (
                                     <option key={c} value={c}>
@@ -173,7 +197,8 @@ const ProductCreate = () => {
                                 id="brand"
                                 className="form-control"
                                 onChange={handleChange}
-                                value={brand}>
+                                value={brand}
+                            >
                                 <option value="">Please Select</option>
                                 {brands.map((b) => (
                                     <option key={b} value={b}>
@@ -185,7 +210,8 @@ const ProductCreate = () => {
 
                         <button
                             type="submit"
-                            className="btn btn-primary btn-raised">
+                            className="btn btn-primary btn-raised"
+                        >
                             Save
                         </button>
                     </form>
