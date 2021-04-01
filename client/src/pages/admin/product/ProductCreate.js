@@ -6,7 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { createProduct } from "../../../functions/product";
 import AdminNav from "../../../components/nav/AdminNav";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
-import { getCategories } from "../../../functions/category";
+import { getCategories, getSubCategories } from "../../../functions/category";
 
 const initialState = {
     title: "Macbook PRO",
@@ -27,6 +27,8 @@ const ProductCreate = () => {
     const { user } = useSelector((state) => ({ ...state }));
     const [values, setValues] = useState(initialState);
     const [loading, setLoading] = useState(false);
+    const [subOptions, setSubOptions] = useState([]);
+    const [showSub, setShowSub] = useState(false);
 
     useEffect(() => {
         loadCategories();
@@ -71,6 +73,21 @@ const ProductCreate = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
+    const handleCategoryChange = (e) => {
+        e.preventDefault();
+        setValues({ ...values, category: e.target.value });
+        getSubCategories(e.target.value)
+            .then((res) => {
+                setSubOptions(res.data);
+                setShowSub(true);
+            })
+            .catch((err) => {
+                console.error(err);
+                setValues({ ...values, sub_categories: [] });
+                setShowSub(false);
+            });
+    };
+
     return (
         <div className="container-fluid py-2">
             <div className="row">
@@ -95,7 +112,10 @@ const ProductCreate = () => {
                     <ProductCreateForm
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
+                        handleCategoryChange={handleCategoryChange}
                         values={values}
+                        showSub={showSub}
+                        subOptions={subOptions}
                     />
                 </div>
             </div>

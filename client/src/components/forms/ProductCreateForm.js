@@ -1,13 +1,20 @@
 import React from "react";
 
-const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
+const ProductCreateForm = ({
+    handleSubmit,
+    handleChange,
+    handleCategoryChange,
+    values,
+    subOptions,
+    showSub,
+}) => {
     const {
         title,
         description,
         price,
         categories,
         category,
-        // sub_categories,
+        sub_categories,
         shipping,
         quantity,
         // images,
@@ -121,7 +128,7 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
                     name="category"
                     id="category"
                     className="form-control"
-                    onChange={handleChange}
+                    onChange={handleCategoryChange}
                     value={category}
                     required>
                     <option value="">Please select</option>
@@ -133,6 +140,28 @@ const ProductCreateForm = ({ handleSubmit, handleChange, values }) => {
                         ))}
                 </select>
             </div>
+
+            {showSub && (
+                <div className="form-group">
+                    <label htmlFor="category">Sub Category</label>
+                    <select
+                        name="sub_categories"
+                        id="sub_categories"
+                        className="form-control"
+                        onChange={handleChange}
+                        value={sub_categories}
+                        required>
+                        <option value="">Please select</option>
+                        {subOptions &&
+                            subOptions.length > 0 &&
+                            subOptions.map((s) => (
+                                <option key={s._id} value={s._id}>
+                                    {s.name}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+            )}
 
             <button type="submit" className="btn btn-primary btn-raised">
                 Save
