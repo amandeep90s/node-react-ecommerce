@@ -108,7 +108,11 @@ const ProductCreate = () => {
                     <hr />
 
                     <div className="py-3">
-                        <FileUpload />
+                        <FileUpload
+                            values={values}
+                            setValues={setValues}
+                            setLoading={setLoading}
+                        />
                     </div>
 
                     <ProductCreateForm
