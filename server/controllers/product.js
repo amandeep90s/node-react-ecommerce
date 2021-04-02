@@ -18,8 +18,15 @@ exports.create = async (req, res) => {
     }
 };
 
-exports.list = async (req, res) => {
-    res.json(await Product.find({}).sort({ createdAt: -1 }).exec());
+exports.listAll = async (req, res) => {
+    res.json(
+        await Product.find({})
+            .limit(parseInt(req.params.count))
+            .populate("category")
+            .populate("sub_categories")
+            .sort([["createdAt", "desc"]])
+            .exec()
+    );
 };
 
 exports.read = async (req, res) => {
