@@ -107,7 +107,7 @@ const ProductCreate = () => {
                     )}
                     <hr />
 
-                    <div className="py-3">
+                    <div className="pb-3">
                         <FileUpload
                             values={values}
                             setValues={setValues}

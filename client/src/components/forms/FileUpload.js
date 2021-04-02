@@ -2,7 +2,7 @@ import React from "react";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Avatar } from "antd";
+import { Avatar, Badge } from "antd";
 
 const FileUpload = ({ values, setValues, setLoading }) => {
     const { user } = useSelector((state) => ({ ...state }));
@@ -53,17 +53,56 @@ const FileUpload = ({ values, setValues, setLoading }) => {
         }
     };
 
+    const handleImageRemove = (public_id) => {
+        setLoading(true);
+        // console.log("remove image", public_id);
+        axios
+            .post(
+                `${process.env.REACT_APP_API_URL}/remove-image`,
+                { public_id },
+                {
+                    headers: {
+                        authtoken: user ? user.token : "",
+                    },
+                }
+            )
+            .then((res) => {
+                setLoading(false);
+                const { images } = values;
+                let filteredImages = images.filter((item) => {
+                    return item.public_id !== public_id;
+                });
+                setValues({ ...values, images: filteredImages });
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    };
+
     return (
         <>
-            <div className="w-100">
+            <div className="w-100 mb-3">
                 {values.images &&
                     values.images.map((image) => (
-                        <Avatar
+                        <div
+                            className="mr-3 d-inline-block"
                             key={image.public_id}
-                            size={100}
-                            src={image.url}
-                            className="m-3"
-                        />
+                        >
+                            <Badge
+                                count="X"
+                                onClick={() =>
+                                    handleImageRemove(image.public_id)
+                                }
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Avatar
+                                    size={100}
+                                    src={image.url}
+                                    shape="square"
+                                />
+                            </Badge>
+                        </div>
                     ))}
             </div>
 
