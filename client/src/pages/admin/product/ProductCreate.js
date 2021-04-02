@@ -7,6 +7,7 @@ import { createProduct } from "../../../functions/product";
 import AdminNav from "../../../components/nav/AdminNav";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getSubCategories } from "../../../functions/category";
+import FileUpload from "../../../components/forms/FileUpload";
 
 const initialState = {
     title: "Macbook PRO",
@@ -105,6 +106,10 @@ const ProductCreate = () => {
                         <h4>Create Product</h4>
                     )}
                     <hr />
+
+                    <div className="py-3">
+                        <FileUpload />
+                    </div>
 
                     <ProductCreateForm
                         handleSubmit={handleSubmit}
