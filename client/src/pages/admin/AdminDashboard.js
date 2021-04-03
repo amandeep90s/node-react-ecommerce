@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "../../components/nav/AdminNav";
+import AdminProductCard from "../../components/cards/AdminProductCard";
 import { getProductsByCount } from "../../functions/product";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
                 <div className="col-md-2">
                     <AdminNav />
                 </div>
-                <div className="col">
+                <div className="col-md-10">
                     {loading ? (
                         <h4>
                             <Spin
@@ -43,6 +44,14 @@ const AdminDashboard = () => {
                     ) : (
                         <h4>Admin Dashboard</h4>
                     )}
+                    <hr />
+                    <div className="row">
+                        {products.map((product) => (
+                            <div className="col-md-3 mb-3" key={product._id}>
+                                <AdminProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
