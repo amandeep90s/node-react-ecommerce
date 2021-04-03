@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import AdminNav from "../../../components/nav/AdminNav";
 import AdminProductCard from "../../../components/cards/AdminProductCard";
-import { getProductsByCount } from "../../../functions/product";
+import { getProductsByCount, removeProduct } from "../../../functions/product";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
+import { toast } from "react-toastify";
 
-const Products = () => {
+const AllProducts = () => {
+    const { user } = useSelector((state) => ({ ...state }));
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -24,6 +27,26 @@ const Products = () => {
                 setLoading(false);
                 console.error(error);
             });
+    };
+
+    const handleRemove = (slug) => {
+        let answer = window.confirm("Are you sure ?");
+        if (answer) {
+            setLoading(true);
+            removeProduct(slug, user.token)
+                .then((res) => {
+                    console.log(res.data);
+                    setLoading(false);
+                    toast.success(`${res.data.title} deleted successfully`);
+                    loadAllProducts();
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setLoading(false);
+                    if (error.response.status === 400)
+                        toast.error(error.response.data);
+                });
+        }
     };
 
     return (
@@ -48,7 +71,10 @@ const Products = () => {
                     <div className="row">
                         {products.map((product) => (
                             <div className="col-md-3 mb-3" key={product._id}>
-                                <AdminProductCard product={product} />
+                                <AdminProductCard
+                                    product={product}
+                                    handleRemove={handleRemove}
+                                />
                             </div>
                         ))}
                     </div>
@@ -58,4 +84,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default AllProducts;
