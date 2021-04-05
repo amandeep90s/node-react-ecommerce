@@ -35,7 +35,6 @@ const AllProducts = () => {
             setLoading(true);
             removeProduct(slug, user.token)
                 .then((res) => {
-                    console.log(res.data);
                     setLoading(false);
                     toast.success(`${res.data.title} deleted successfully`);
                     loadAllProducts();

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import { createProduct } from "../../../functions/product";
-import AdminNav from "../../../components/nav/AdminNav";
-import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getSubCategories } from "../../../functions/category";
+import { getProduct, updateProduct } from "../../../functions/product";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { toast } from "react-toastify";
+import AdminNav from "../../../components/nav/AdminNav";
 import FileUpload from "../../../components/forms/FileUpload";
+import ProductUpdateForm from "../../../components/forms/ProductUpdateForm";
 
 const initialState = {
     title: "",
@@ -23,42 +23,41 @@ const initialState = {
     color: "",
     brand: "",
 };
-const ProductCreate = () => {
-    const { user } = useSelector((state) => ({ ...state }));
+
+const ProductUpdate = ({ match, history }) => {
     const [values, setValues] = useState(initialState);
     const [categories, setCategories] = useState([]);
     const [subOptions, setSubOptions] = useState([]);
-    const [showSub, setShowSub] = useState(false);
+    const [showSub, setShowSub] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    const { user } = useSelector((state) => ({ ...state }));
+
+    const { slug } = match.params;
 
     useEffect(() => {
         const loadCategories = () =>
             getCategories().then((c) => setCategories(c.data));
 
         loadCategories();
+
+        const loadProduct = (slug) => {
+            getProduct(slug).then((p) => {
+                setValues({ ...values, ...p.data });
+            });
+        };
+
+        loadProduct(slug);
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        createProduct(values, user.token)
+        updateProduct(slug, values, user.token)
             .then(() => {
-                toast.success(`"${values.title}" create successfully.`);
-                setValues({
-                    ...values,
-                    title: "",
-                    description: "",
-                    price: "",
-                    category: "",
-                    sub_categories: [],
-                    shipping: "",
-                    quantity: "",
-                    images: [],
-                    color: "",
-                    brand: "",
-                });
-                setSubOptions([]);
+                toast.success(`"${values.title}" updated successfully.`);
                 setLoading(false);
+                history.push("/admin/products");
             })
             .catch((error) => {
                 console.error(error);
@@ -103,19 +102,19 @@ const ProductCreate = () => {
                             Loading...
                         </h4>
                     ) : (
-                        <h4>Create Product</h4>
+                        <h4>Update Product</h4>
                     )}
                     <hr />
 
-                    <div className="pb-3">
+                    {/* <div className="pb-3">
                         <FileUpload
                             values={values}
                             setValues={setValues}
                             setLoading={setLoading}
                         />
-                    </div>
+                    </div> */}
 
-                    <ProductCreateForm
+                    <ProductUpdateForm
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
                         handleCategoryChange={handleCategoryChange}
@@ -131,4 +130,4 @@ const ProductCreate = () => {
     );
 };
 
-export default ProductCreate;
+export default ProductUpdate;

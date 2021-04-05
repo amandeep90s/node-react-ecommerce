@@ -34,7 +34,6 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                                 }
                             )
                             .then((res) => {
-                                console.log("image data", res);
                                 setLoading(false);
                                 allUploadedFiles.push(res.data);
                                 setValues({
@@ -55,7 +54,6 @@ const FileUpload = ({ values, setValues, setLoading }) => {
 
     const handleImageRemove = (public_id) => {
         setLoading(true);
-        // console.log("remove image", public_id);
         axios
             .post(
                 `${process.env.REACT_APP_API_URL}/remove-image`,
@@ -66,7 +64,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                     },
                 }
             )
-            .then((res) => {
+            .then(() => {
                 setLoading(false);
                 const { images } = values;
                 let filteredImages = images.filter((item) => {
@@ -75,7 +73,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                 setValues({ ...values, images: filteredImages });
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err);
                 setLoading(false);
             });
     };

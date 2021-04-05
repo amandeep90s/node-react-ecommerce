@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "antd";
 const { Option } = Select;
 
-const ProductCreateForm = ({
+const ProductUpdateForm = ({
     handleSubmit,
     handleChange,
     handleCategoryChange,
@@ -127,7 +127,7 @@ const ProductCreateForm = ({
                 </select>
             </div>
 
-            <div className="form-group">
+            {/* <div className="form-group">
                 <label htmlFor="category">Category</label>
                 <select
                     name="category"
@@ -168,7 +168,7 @@ const ProductCreateForm = ({
                             ))}
                     </Select>
                 </div>
-            )}
+            )} */}
 
             <button type="submit" className="btn btn-primary btn-raised">
                 Save
@@ -177,4 +177,4 @@ const ProductCreateForm = ({
     );
 };
 
-export default ProductCreateForm;
+export default ProductUpdateForm;
