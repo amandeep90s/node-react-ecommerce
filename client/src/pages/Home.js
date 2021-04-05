@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProductsByCount } from "../functions/product";
 import ProductCard from "../components/cards/ProductCard";
+import Jumbotron from "../components/cards/Jumbotron";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
@@ -26,18 +27,10 @@ const Home = () => {
 
     return (
         <>
-            <div className="jumbotron">
-                {loading ? (
-                    <h4>
-                        <Spin
-                            indicator={<LoadingOutlined />}
-                            className="mr-2"
-                        />
-                        Loading...
-                    </h4>
-                ) : (
-                    <h4>All Products</h4>
-                )}
+            <div className="jumbotron text-danger text-center h1 font-weight-bold">
+                <Jumbotron
+                    text={["Latest Products", "New Arrivals", "Best Sellers"]}
+                />
             </div>
             <div className="container">
                 <div className="row">
