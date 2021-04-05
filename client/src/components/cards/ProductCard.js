@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card } from "antd";
 import laptop from "../../images/laptop.png";
+import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
@@ -19,6 +21,15 @@ const ProductCard = ({ product }) => {
                     className="img-fluid p-2"
                 />
             }
+            actions={[
+                <Link to={`/product/${slug}`}>
+                    <EyeOutlined className="text-warning" /> <br /> View Product
+                </Link>,
+                <>
+                    <ShoppingCartOutlined className="text-danger" /> <br /> Add
+                    To Cart
+                </>,
+            ]}
         >
             <Meta
                 title={title}
