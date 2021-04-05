@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getProductsByCount } from "../functions/product";
 import ProductCard from "../components/cards/ProductCard";
+import LoadingCard from "../components/cards/LoadingCard";
 import Jumbotron from "../components/cards/Jumbotron";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -22,6 +21,7 @@ const Home = () => {
             })
             .catch((error) => {
                 console.error(error.message);
+                setLoading(false);
             });
     };
 
@@ -32,14 +32,19 @@ const Home = () => {
                     text={["Latest Products", "New Arrivals", "Best Sellers"]}
                 />
             </div>
+
             <div className="container">
-                <div className="row">
-                    {products.map((product) => (
-                        <div className="col-md-3 mb-3" key={product._id}>
-                            <ProductCard product={product} />
-                        </div>
-                    ))}
-                </div>
+                {loading ? (
+                    <LoadingCard count={4} />
+                ) : (
+                    <div className="row">
+                        {products.map((product) => (
+                            <div key={product._id} className="col-md-3">
+                                <ProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </>
     );
