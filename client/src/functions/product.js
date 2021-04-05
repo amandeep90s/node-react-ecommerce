@@ -45,3 +45,12 @@ export const removeProduct = async (slug, authtoken) => {
         }
     );
 };
+
+// Get products list with sort, order, limit
+export const getProducts = async (sort, order, limit) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/products`, {
+        sort,
+        order,
+        limit,
+    });
+};
