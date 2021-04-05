@@ -25,9 +25,12 @@ const initialState = {
 };
 
 const ProductUpdate = ({ match, history }) => {
+    // state
     const [values, setValues] = useState(initialState);
     const [categories, setCategories] = useState([]);
     const [subOptions, setSubOptions] = useState([]);
+    const [arrayOfSubs, setArrayOfSubs] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
     const [loading, setLoading] = useState(false);
 
     const { user } = useSelector((state) => ({ ...state }));
@@ -35,13 +38,26 @@ const ProductUpdate = ({ match, history }) => {
     const { slug } = match.params;
 
     useEffect(() => {
-        loadCategories();
-
         loadProduct();
+        loadCategories();
     }, []);
 
+    const loadProduct = () => {
+        getProduct(slug).then((p) => {
+            setValues({ ...values, ...p.data });
+            loadSubCategories(p.data.category._id);
+
+            let arr = [];
+            p.data.sub_categories.map((s) => arr.push(s._id));
+
+            setArrayOfSubs((prev) => arr);
+        });
+    };
+
     const loadCategories = () =>
-        getCategories().then((c) => setCategories(c.data));
+        getCategories().then((c) => {
+            setCategories(c.data);
+        });
 
     const loadSubCategories = (categoryId) => {
         getSubCategories(categoryId)
@@ -54,26 +70,23 @@ const ProductUpdate = ({ match, history }) => {
             });
     };
 
-    const loadProduct = () => {
-        getProduct(slug).then((p) => {
-            setValues({ ...values, ...p.data });
-            loadSubCategories(p.data.category);
-        });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
+
+        values.sub_categories = arrayOfSubs;
+        values.category = selectedCategory ? selectedCategory : values.category;
+
         updateProduct(slug, values, user.token)
-            .then(() => {
-                toast.success(`"${values.title}" updated successfully.`);
+            .then((res) => {
                 setLoading(false);
+                toast.success(`"${res.data.title}" is updated`);
                 history.push("/admin/products");
             })
-            .catch((error) => {
-                console.error(error);
+            .catch((err) => {
+                console.log(err);
                 setLoading(false);
-                toast.error(error.response.data.error);
+                toast.error(err.response.data.error);
             });
     };
 
@@ -83,8 +96,18 @@ const ProductUpdate = ({ match, history }) => {
 
     const handleCategoryChange = (e) => {
         e.preventDefault();
-        setValues({ ...values, sub_categories: [], category: e.target.value });
+
+        setValues({ ...values, sub_categories: [] });
+
+        setSelectedCategory(e.target.value);
+
         loadSubCategories(e.target.value);
+
+        if (values.category._id === e.target.value) {
+            loadProduct();
+        }
+
+        setArrayOfSubs([]);
     };
 
     return (
@@ -108,22 +131,24 @@ const ProductUpdate = ({ match, history }) => {
                     )}
                     <hr />
 
-                    {/* <div className="pb-3">
+                    <div className="pb-3">
                         <FileUpload
                             values={values}
                             setValues={setValues}
                             setLoading={setLoading}
                         />
-                    </div> */}
+                    </div>
 
                     <ProductUpdateForm
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}
+                        values={values}
                         handleCategoryChange={handleCategoryChange}
                         categories={categories}
-                        setValues={setValues}
-                        values={values}
                         subOptions={subOptions}
+                        arrayOfSubs={arrayOfSubs}
+                        setArrayOfSubs={setArrayOfSubs}
+                        selectedCategory={selectedCategory}
                     />
                 </div>
             </div>

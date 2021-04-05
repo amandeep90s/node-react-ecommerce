@@ -30,21 +30,32 @@ exports.listAll = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-    const product = await Product.findOne({ slug: req.params.slug }).exec();
+    const product = await Product.findOne({ slug: req.params.slug })
+        .populate("category")
+        .populate("sub_categories")
+        .exec();
     res.json(product);
 };
 
 exports.update = async (req, res) => {
     try {
-        req.body.slug = slugify(req.body.title);
+        if (req.body.title) {
+            req.body.slug = slugify(req.body.title);
+        }
         const updated = await Product.findOneAndUpdate(
             { slug: req.params.slug },
             req.body,
             { new: true }
-        );
+        ).exec();
         res.json(updated);
     } catch (error) {
-        res.status(400).send("Product updated failed");
+        console.error(error);
+        res.status(400).json({
+            error:
+                error.name === "MongoError" && error.code === 11000
+                    ? "Product already exists !"
+                    : "Create product failed !",
+        });
     }
 };
 
