@@ -10,7 +10,6 @@ const ProductUpdateForm = ({
     setValues,
     values,
     subOptions,
-    showSub,
 }) => {
     const {
         title,
@@ -71,8 +70,7 @@ const ProductUpdateForm = ({
                     id="shipping"
                     className="form-control"
                     onChange={handleChange}
-                    value={shipping}
-                >
+                    value={shipping}>
                     <option value="">Please Select</option>
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -98,8 +96,7 @@ const ProductUpdateForm = ({
                     id="color"
                     className="form-control"
                     onChange={handleChange}
-                    value={color}
-                >
+                    value={color}>
                     <option value="">Please Select</option>
                     {colors.map((c) => (
                         <option key={c} value={c}>
@@ -116,8 +113,7 @@ const ProductUpdateForm = ({
                     id="brand"
                     className="form-control"
                     onChange={handleChange}
-                    value={brand}
-                >
+                    value={brand}>
                     <option value="">Please Select</option>
                     {brands.map((b) => (
                         <option key={b} value={b}>
@@ -127,7 +123,7 @@ const ProductUpdateForm = ({
                 </select>
             </div>
 
-            {/* <div className="form-group">
+            <div className="form-group">
                 <label htmlFor="category">Category</label>
                 <select
                     name="category"
@@ -135,8 +131,7 @@ const ProductUpdateForm = ({
                     className="form-control"
                     onChange={handleCategoryChange}
                     value={category}
-                    required
-                >
+                    required>
                     <option value="">Please select</option>
                     {categories.length > 0 &&
                         categories.map((c) => (
@@ -147,28 +142,26 @@ const ProductUpdateForm = ({
                 </select>
             </div>
 
-            {showSub && (
-                <div className="form-group">
-                    <label htmlFor="category">Sub Categories</label>
-                    <Select
-                        mode="multiple"
-                        allowClear
-                        style={{ width: "100%" }}
-                        placeholder="Please select"
-                        value={sub_categories}
-                        onChange={(value) =>
-                            setValues({ ...values, sub_categories: value })
-                        }
-                    >
-                        {subOptions.length > 0 &&
-                            subOptions.map((s) => (
-                                <Option key={s._id} value={s._id}>
-                                    {s.name}
-                                </Option>
-                            ))}
-                    </Select>
-                </div>
-            )} */}
+            <div className="form-group">
+                <label htmlFor="category">Sub Categories</label>
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{ width: "100%" }}
+                    placeholder="Please select"
+                    value={sub_categories}
+                    onChange={(value) =>
+                        setValues({ ...values, sub_categories: value })
+                    }>
+                    {subOptions &&
+                        subOptions.length > 0 &&
+                        subOptions.map((s) => (
+                            <Option key={s._id} value={s._id}>
+                                {s.name}
+                            </Option>
+                        ))}
+                </Select>
+            </div>
 
             <button type="submit" className="btn btn-primary btn-raised">
                 Save

@@ -28,7 +28,6 @@ const ProductUpdate = ({ match, history }) => {
     const [values, setValues] = useState(initialState);
     const [categories, setCategories] = useState([]);
     const [subOptions, setSubOptions] = useState([]);
-    const [showSub, setShowSub] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const { user } = useSelector((state) => ({ ...state }));
@@ -36,19 +35,31 @@ const ProductUpdate = ({ match, history }) => {
     const { slug } = match.params;
 
     useEffect(() => {
-        const loadCategories = () =>
-            getCategories().then((c) => setCategories(c.data));
-
         loadCategories();
 
-        const loadProduct = (slug) => {
-            getProduct(slug).then((p) => {
-                setValues({ ...values, ...p.data });
-            });
-        };
-
-        loadProduct(slug);
+        loadProduct();
     }, []);
+
+    const loadCategories = () =>
+        getCategories().then((c) => setCategories(c.data));
+
+    const loadSubCategories = (categoryId) => {
+        getSubCategories(categoryId)
+            .then((res) => {
+                setSubOptions(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                setValues({ ...values, sub_categories: [] });
+            });
+    };
+
+    const loadProduct = () => {
+        getProduct(slug).then((p) => {
+            setValues({ ...values, ...p.data });
+            loadSubCategories(p.data.category);
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -73,16 +84,7 @@ const ProductUpdate = ({ match, history }) => {
     const handleCategoryChange = (e) => {
         e.preventDefault();
         setValues({ ...values, sub_categories: [], category: e.target.value });
-        getSubCategories(e.target.value)
-            .then((res) => {
-                setSubOptions(res.data);
-                setShowSub(true);
-            })
-            .catch((err) => {
-                console.error(err);
-                setValues({ ...values, sub_categories: [] });
-                setShowSub(false);
-            });
+        loadSubCategories(e.target.value);
     };
 
     return (
@@ -121,7 +123,6 @@ const ProductUpdate = ({ match, history }) => {
                         categories={categories}
                         setValues={setValues}
                         values={values}
-                        showSub={showSub}
                         subOptions={subOptions}
                     />
                 </div>

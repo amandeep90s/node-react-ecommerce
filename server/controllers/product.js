@@ -30,10 +30,7 @@ exports.listAll = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-    const product = await Product.findOne({ slug: req.params.slug })
-        .populate("category")
-        .populate("sub_categories")
-        .exec();
+    const product = await Product.findOne({ slug: req.params.slug }).exec();
     res.json(product);
 };
 
