@@ -57,8 +57,10 @@ const ProductCreate = () => {
                     color: "",
                     brand: "",
                 });
+
                 setSubOptions([]);
                 setLoading(false);
+                console.log("rese state", values);
             })
             .catch((error) => {
                 console.error(error);

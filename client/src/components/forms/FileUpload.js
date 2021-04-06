@@ -81,27 +81,28 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     return (
         <>
             <div className="w-100 mb-3">
-                {values.images &&
-                    values.images.map((image) => (
-                        <div
-                            className="mr-3 d-inline-block"
-                            key={image.public_id}
-                        >
-                            <Badge
-                                count="X"
-                                onClick={() =>
-                                    handleImageRemove(image.public_id)
-                                }
-                                style={{ cursor: "pointer" }}
-                            >
-                                <Avatar
-                                    size={100}
-                                    src={image.url}
-                                    shape="square"
-                                />
-                            </Badge>
-                        </div>
-                    ))}
+                {values.images && values.images.length
+                    ? values.images.map((image) => (
+                          <div
+                              className="mr-3 d-inline-block"
+                              key={image.public_id}
+                          >
+                              <Badge
+                                  count="X"
+                                  onClick={() =>
+                                      handleImageRemove(image.public_id)
+                                  }
+                                  style={{ cursor: "pointer" }}
+                              >
+                                  <Avatar
+                                      size={100}
+                                      src={image.url}
+                                      shape="square"
+                                  />
+                              </Badge>
+                          </div>
+                      ))
+                    : ""}
             </div>
 
             <div className="w-100">
