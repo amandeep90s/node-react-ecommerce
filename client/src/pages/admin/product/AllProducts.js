@@ -25,7 +25,7 @@ const AllProducts = () => {
             })
             .catch((error) => {
                 setLoading(false);
-                console.error(error);
+                console.log(error);
             });
     };
 
@@ -40,7 +40,7 @@ const AllProducts = () => {
                     loadAllProducts();
                 })
                 .catch((error) => {
-                    console.error(error);
+                    console.log(error);
                     setLoading(false);
                     if (error.response.status === 400)
                         toast.error(error.response.data);

@@ -55,13 +55,13 @@ const RegisterComplete = ({ history }) => {
                             },
                         });
                     })
-                    .catch((error) => console.error(error));
+                    .catch((error) => console.log(error));
 
                 // redirect
                 history.push("/");
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
             toast.error(error.message);
         }
     };

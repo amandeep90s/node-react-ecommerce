@@ -35,7 +35,7 @@ const CategoryUpdate = ({ history }) => {
             })
             .catch((error) => {
                 setLoading(false);
-                console.error(error);
+                console.log(error);
                 if (error.response.status === 400)
                     toast.error(error.response.data);
             });

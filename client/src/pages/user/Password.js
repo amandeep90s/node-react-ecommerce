@@ -22,7 +22,7 @@ const Password = () => {
             })
             .catch((error) => {
                 toast.error(error.message);
-                console.error(error);
+                console.log(error);
                 setLoading(false);
             });
     };
@@ -43,7 +43,8 @@ const Password = () => {
             <button
                 type="submit"
                 className="btn btn-primary btn-raised"
-                disabled={!password || password.length < 6 || loading}>
+                disabled={!password || password.length < 6 || loading}
+            >
                 Submit
             </button>
         </form>

@@ -65,7 +65,7 @@ const ProductUpdate = ({ match, history }) => {
                 setSubOptions(res.data);
             })
             .catch((err) => {
-                console.error(err);
+                console.log(err);
                 setValues({ ...values, sub_categories: [] });
             });
     };

@@ -34,7 +34,7 @@ const ForgotPassword = ({ history }) => {
             .catch((error) => {
                 setLoading(false);
                 toast.error(error.message);
-                console.error("Error message in forgot password", error);
+                console.log("Error message in forgot password", error);
             });
     };
 

@@ -56,10 +56,10 @@ const Login = ({ history }) => {
                     });
                     roleBasedRedirect(response);
                 })
-                .catch((error) => console.error(error));
+                .catch((error) => console.log(error));
         } catch (error) {
             toast.error(error.message);
-            console.error(error);
+            console.log(error);
             setLoading(false);
         }
     };
@@ -84,11 +84,11 @@ const Login = ({ history }) => {
                         });
                         roleBasedRedirect(response);
                     })
-                    .catch((error) => console.error(error));
+                    .catch((error) => console.log(error));
             })
             .catch((error) => {
                 toast.error(error.message);
-                console.error(error);
+                console.log(error);
             });
     };
 
@@ -123,7 +123,8 @@ const Login = ({ history }) => {
                 shape="round"
                 icon={<MailOutlined />}
                 size="large"
-                disabled={!email || password.length < 6}>
+                disabled={!email || password.length < 6}
+            >
                 Login with Email/Password
             </Button>
         </form>
@@ -154,13 +155,15 @@ const Login = ({ history }) => {
                         block
                         shape="round"
                         icon={<GoogleOutlined />}
-                        size="large">
+                        size="large"
+                    >
                         Login with Google
                     </Button>
 
                     <Link
                         to="/forgot/password"
-                        className="float-right text-danger">
+                        className="float-right text-danger"
+                    >
                         Forgot Password
                     </Link>
                 </div>

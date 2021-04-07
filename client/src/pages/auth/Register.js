@@ -33,7 +33,7 @@ const Register = ({ history }) => {
                 setEmail("");
             })
             .catch((error) => {
-                console.error(error);
+                console.log(error);
                 toast.error(error.message);
             });
     };

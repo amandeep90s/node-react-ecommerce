@@ -63,7 +63,7 @@ const ProductCreate = () => {
                 console.log("rese state", values);
             })
             .catch((error) => {
-                console.error(error);
+                console.log(error);
                 setLoading(false);
                 toast.error(error.response.data.error);
             });
@@ -82,7 +82,7 @@ const ProductCreate = () => {
                 setShowSub(true);
             })
             .catch((err) => {
-                console.error(err);
+                console.log(err);
                 setValues({ ...values, sub_categories: [] });
                 setShowSub(false);
             });

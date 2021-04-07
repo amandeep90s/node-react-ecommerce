@@ -43,7 +43,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                             })
                             .catch((err) => {
                                 setLoading(false);
-                                console.error(err);
+                                console.log(err);
                             });
                     },
                     "base64"
@@ -73,7 +73,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                 setValues({ ...values, images: filteredImages });
             })
             .catch((err) => {
-                console.error(err);
+                console.log(err);
                 setLoading(false);
             });
     };
