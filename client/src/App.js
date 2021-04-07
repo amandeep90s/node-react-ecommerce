@@ -13,6 +13,7 @@ import AdminRoute from "./components/routes/AdminRoute";
 
 // Pages
 import Home from "./pages/Home";
+import Product from "./pages/Product";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import RegisterComplete from "./pages/auth/RegisterComplete";
@@ -79,9 +80,14 @@ const App = () => {
                     path="/forgot/password"
                     component={ForgotPassword}
                 />
+                <Route exact path="/product/:slug" component={Product} />
+
+                {/* User Routes */}
                 <UserRoute exact path="/user/history" component={History} />
                 <UserRoute exact path="/user/password" component={Password} />
                 <UserRoute exact path="/user/wishlist" component={Wishlist} />
+
+                {/* Admin Routes */}
                 <AdminRoute
                     exact
                     path="/admin/dashboard"
