@@ -13,7 +13,7 @@ const NewArrivals = () => {
     useEffect(() => {
         const loadAllProducts = () => {
             setLoading(true);
-            // sort, order, limit
+            // sort, order, page
             getProducts("createdAt", "desc", page).then((res) => {
                 setProducts(res.data);
                 setLoading(false);
