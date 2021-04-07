@@ -31,12 +31,16 @@ exports.listAll = async (req, res) => {
 
 exports.list = async (req, res) => {
     try {
-        const { sort, order, limit } = req.body;
+        const { sort, order, page } = req.body;
+        const currentPage = page || 1;
+        const perPage = 4;
+
         const products = await Product.find({})
+            .skip((currentPage - 1) * perPage)
             .populate("category")
             .populate("sub_categories")
             .sort([[sort, order]])
-            .limit(limit)
+            .limit(perPage)
             .exec();
 
         res.json(products);
