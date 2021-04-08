@@ -20,7 +20,13 @@ const Product = ({ match }) => {
                 <SingleProduct product={product} />
             </div>
 
-            <div className="row">Related products</div>
+            <div className="row">
+                <div className="col py-5 text-center">
+                    <hr />
+                    <h4>Related products</h4>
+                    <hr />
+                </div>
+            </div>
         </div>
     );
 };
