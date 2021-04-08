@@ -8,21 +8,34 @@ import {
 } from "@ant-design/icons";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import Laptop from "../../images/laptop.png";
 
 const { Meta } = Card;
 
 const SingleProduct = ({ product }) => {
-    const { title, description, images, slug } = product;
+    const { title, description, images } = product;
 
     return (
         <>
             <div className="col-md-7">
-                <Carousel showArrows={true} autoPlay infiniteLoop>
-                    {images &&
-                        images.map((i) => (
-                            <img src={i.url} key={i.public_id} />
-                        ))}
-                </Carousel>
+                {images && images.length ? (
+                    <Carousel showArrows={true} autoPlay infiniteLoop>
+                        {images &&
+                            images.map((i) => (
+                                <img src={i.url} key={i.public_id} alt="" />
+                            ))}
+                    </Carousel>
+                ) : (
+                    <Card
+                        cover={
+                            <img
+                                alt="Product Carousel"
+                                src={Laptop}
+                                className="mb-3 card-image"
+                            />
+                        }
+                    ></Card>
+                )}
             </div>
             <div className="col-md-5">
                 <Card
