@@ -1,19 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card } from "antd";
-import {
-    HeartOutlined,
-    ShoppingCartOutlined,
-    StarOutlined,
-} from "@ant-design/icons";
+import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import Laptop from "../../images/laptop.png";
+import ProductListItems from "./ProductListItems";
 
 const { Meta } = Card;
 
 const SingleProduct = ({ product }) => {
-    const { title, description, images } = product;
+    const { title, images } = product;
 
     return (
         <>
@@ -38,6 +35,7 @@ const SingleProduct = ({ product }) => {
                 )}
             </div>
             <div className="col-md-5">
+                <h1 className="bg-info p-3">{title}</h1>
                 <Card
                     actions={[
                         <>
@@ -50,14 +48,9 @@ const SingleProduct = ({ product }) => {
                             <br />
                             Add To Wishlist
                         </Link>,
-                        <Link to="/">
-                            <StarOutlined className="text-danger" />
-                            <br />
-                            Login to Leave Rating
-                        </Link>,
                     ]}
                 >
-                    <Meta title={title} description={description} />
+                    <ProductListItems product={product} />
                 </Card>
             </div>
         </>
