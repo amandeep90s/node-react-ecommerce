@@ -60,12 +60,12 @@ const ProductSchema = new mongoose.Schema(
             type: String,
             enum: ["Microsoft", "Apple", "Dell", "Lenovo", "Asus"],
         },
-        // ratings: [
-        //     {
-        //         star: Number,
-        //         postedBy: { type: ObjectId, ref: "User" },
-        //     },
-        // ],
+        ratings: [
+            {
+                star: Number,
+                postedBy: { type: ObjectId, ref: "User" },
+            },
+        ],
     },
     { timestamps: true }
 );

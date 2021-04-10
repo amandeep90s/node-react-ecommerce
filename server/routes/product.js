@@ -13,6 +13,7 @@ const {
     listAll,
     list,
     productsCount,
+    productStar,
 } = require("../controllers/product");
 
 // routes
@@ -23,5 +24,8 @@ router.get("/product/:slug", read);
 router.put("/product/:slug", authCheck, adminCheck, update);
 router.delete("/product/:slug", authCheck, adminCheck, remove);
 router.post("/products", list);
+
+// rating system routes
+router.put("/product/star/:productId", authCheck, productStar);
 
 module.exports = router;
