@@ -13,6 +13,7 @@ import AdminRoute from "./components/routes/AdminRoute";
 
 // Pages
 import Home from "./pages/Home";
+import CategoryHome from "./pages/category/CategoryHome";
 import Product from "./pages/Product";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -80,6 +81,7 @@ const App = () => {
                     path="/forgot/password"
                     component={ForgotPassword}
                 />
+                <Route exact path="/category/:slug" component={CategoryHome} />
                 <Route exact path="/product/:slug" component={Product} />
 
                 {/* User Routes */}
