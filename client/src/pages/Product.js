@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getProduct, productStar } from "../functions/product";
 import SingleProduct from "../components/cards/SingleProduct";
 import { useSelector } from "react-redux";
@@ -11,9 +11,14 @@ const Product = ({ match }) => {
 
     const { slug } = match.params;
 
+    const loadSingleProduct = useCallback(
+        () => getProduct(slug).then((res) => setProduct(res.data)),
+        [slug]
+    );
+
     useEffect(() => {
         loadSingleProduct();
-    }, [slug]);
+    }, [slug, loadSingleProduct]);
 
     useEffect(() => {
         if (product.ratings && user) {
@@ -24,9 +29,6 @@ const Product = ({ match }) => {
             existingRatingObject && setStar(existingRatingObject.star);
         }
     }, [product.ratings, user]);
-
-    const loadSingleProduct = () =>
-        getProduct(slug).then((res) => setProduct(res.data));
 
     const onStarClick = (newRating, name) => {
         setStar(newRating);
