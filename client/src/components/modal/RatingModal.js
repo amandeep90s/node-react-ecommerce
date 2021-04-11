@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { toast } from "react-toastify";
 import { StarOutlined } from "@ant-design/icons";
 import { useHistory, useParams } from "react-router-dom";
