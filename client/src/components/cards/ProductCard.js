@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
                     <img
                         alt="Product"
                         src={images && images.length ? images[0].url : laptop}
-                        style={{ height: "150px", objectFit: "cover" }}
+                        style={{ height: "160px", objectFit: "cover" }}
                         className="img-fluid p-2"
                     />
                 }

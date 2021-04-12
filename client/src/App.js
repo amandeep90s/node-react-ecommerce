@@ -23,6 +23,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import History from "./pages/user/History";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
+import Shop from "./pages/Shop";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -89,6 +90,7 @@ const App = () => {
                     component={SubCategoryHome}
                 />
                 <Route exact path="/product/:slug" component={Product} />
+                <Route exact path="/shop" component={Shop} />
 
                 {/* User Routes */}
                 <UserRoute exact path="/user/history" component={History} />
