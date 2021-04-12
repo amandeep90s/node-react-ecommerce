@@ -11,6 +11,7 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import Search from "../forms/Search";
 
 const { Item, SubMenu } = Menu;
 
@@ -45,7 +46,8 @@ const Header = () => {
                 <Item
                     key="register"
                     icon={<UserAddOutlined />}
-                    className="float-right">
+                    className="float-right"
+                >
                     <Link to="/register">Register</Link>
                 </Item>
             )}
@@ -54,7 +56,8 @@ const Header = () => {
                 <Item
                     key="login"
                     icon={<UserOutlined />}
-                    className="float-right">
+                    className="float-right"
+                >
                     <Link to="/login">Login</Link>
                 </Item>
             )}
@@ -64,7 +67,8 @@ const Header = () => {
                     key="SubMenu"
                     icon={<SettingOutlined />}
                     title={user.email && user.email.split("@")[0]}
-                    className="float-right text-capitalize">
+                    className="float-right text-capitalize"
+                >
                     {user && user.role === "subscriber" && (
                         <Item>
                             <Link to="/user/history">Dashboard</Link>
@@ -82,6 +86,10 @@ const Header = () => {
                     </Item>
                 </SubMenu>
             )}
+
+            <span className="float-right p-1">
+                <Search />
+            </span>
         </Menu>
     );
 };
