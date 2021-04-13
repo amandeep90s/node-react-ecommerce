@@ -54,7 +54,7 @@ const Shop = () => {
             if (text.length > 0) {
                 fetchProducts({ query: text });
             }
-        }, 300);
+        }, 500);
 
         return () => clearTimeout(delayed);
     }, [text]);
@@ -73,7 +73,7 @@ const Shop = () => {
         setPrice(value);
         setTimeout(() => {
             setOk(!ok);
-        }, 300);
+        }, 500);
     };
 
     // 4. load products based on category
