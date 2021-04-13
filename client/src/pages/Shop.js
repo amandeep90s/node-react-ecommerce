@@ -8,7 +8,9 @@ import {
     DollarOutlined,
     DownSquareOutlined,
     LoadingOutlined,
+    StarOutlined,
 } from "@ant-design/icons";
+import Star from "../components/forms/Star";
 
 const { SubMenu, ItemGroup } = Menu;
 
@@ -19,6 +21,7 @@ const Shop = () => {
     const [ok, setOk] = useState(false);
     const [categories, setCategories] = useState([]);
     const [categoryIds, setCategoryIds] = useState([]);
+    const [star, setStar] = useState("");
 
     let dispatch = useDispatch();
     const { search } = useSelector((state) => ({ ...state }));
@@ -69,8 +72,11 @@ const Shop = () => {
             type: "SEARCH_QUERY",
             payload: { text: "" },
         });
+
+        // reset
         setCategoryIds([]);
         setPrice(value);
+        setStar("");
         setTimeout(() => {
             setOk(!ok);
         }, 500);
@@ -100,6 +106,8 @@ const Shop = () => {
             payload: { text: "" },
         });
         setPrice([0, 0]);
+        setStar("");
+
         let inTheState = [...categoryIds];
         let justChecked = e.target.value;
         let foundInTheState = inTheState.indexOf(justChecked); // index or -1
@@ -116,13 +124,38 @@ const Shop = () => {
         fetchProducts({ category: inTheState });
     };
 
+    // 5. products by star rating
+    const handleStarClick = (number) => {
+        dispatch({
+            type: "SEARCH_QUERY",
+            payload: { text: "" },
+        });
+        setPrice([0, 0]);
+        setCategoryIds([]);
+        setStar(number);
+        fetchProducts({ stars: number });
+    };
+
+    const showStars = () => (
+        <div className="px-4 pb-2">
+            <Star starClick={handleStarClick} numberOfStars={5} />
+            <Star starClick={handleStarClick} numberOfStars={4} />
+            <Star starClick={handleStarClick} numberOfStars={3} />
+            <Star starClick={handleStarClick} numberOfStars={2} />
+            <Star starClick={handleStarClick} numberOfStars={1} />
+        </div>
+    );
+
     return (
         <div className="container-fluid py-3">
             <div className="row">
                 <div className="col-md-3">
                     <h4>Search/Filter</h4>
                     <hr />
-                    <Menu defaultOpenKeys={["1", "2"]} mode="inline">
+                    <Menu
+                        defaultOpenKeys={["1", "2", "3", "4", "5", "6", "7"]}
+                        mode="inline"
+                    >
                         {/* Price */}
                         <SubMenu
                             key="1"
@@ -153,6 +186,17 @@ const Shop = () => {
                             }
                         >
                             <div>{showCategories()}</div>
+                        </SubMenu>
+                        {/* Stars */}
+                        <SubMenu
+                            key="3"
+                            title={
+                                <span className="h6">
+                                    <StarOutlined /> Rating
+                                </span>
+                            }
+                        >
+                            <div>{showStars()}</div>
                         </SubMenu>
                     </Menu>
                 </div>
