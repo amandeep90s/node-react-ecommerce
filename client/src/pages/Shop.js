@@ -4,7 +4,7 @@ import { fetchProuctsByFilter, getProductsByCount } from "../functions/product";
 import { getCategories } from "../functions/category";
 import { getSubCategories } from "../functions/sub-category";
 import ProductCard from "../components/cards/ProductCard";
-import { Checkbox, Menu, Slider, Spin } from "antd";
+import { Checkbox, Menu, Radio, Slider, Spin } from "antd";
 import {
     DollarOutlined,
     DownSquareOutlined,
@@ -26,6 +26,8 @@ const Shop = () => {
     const [star, setStar] = useState("");
     const [subCategories, setSubCategories] = useState([]);
     const [subCategory, setSubCategory] = useState("");
+    const brands = ["Microsoft", "Apple", "Dell", "Lenovo", "Asus"];
+    const [brand, setBrand] = useState("");
 
     let dispatch = useDispatch();
     const { search } = useSelector((state) => ({ ...state }));
@@ -84,6 +86,7 @@ const Shop = () => {
         setPrice(value);
         setStar("");
         setSubCategory("");
+        setBrand("");
         setTimeout(() => {
             setOk(!ok);
         }, 500);
@@ -115,6 +118,7 @@ const Shop = () => {
         setPrice([0, 0]);
         setStar("");
         setSubCategory("");
+        setBrand("");
 
         let inTheState = [...categoryIds];
         let justChecked = e.target.value;
@@ -142,6 +146,7 @@ const Shop = () => {
         setCategoryIds([]);
         setStar(number);
         setSubCategory("");
+        setBrand("");
         fetchProducts({ stars: number });
     };
 
@@ -177,7 +182,38 @@ const Shop = () => {
         setPrice([0, 0]);
         setCategoryIds([]);
         setStar("");
+        setBrand("");
         fetchProducts({ sub });
+    };
+
+    // 7. products by brand name
+    const showBrands = () => {
+        return brands.map((b, i) => (
+            <div key={i}>
+                <Radio
+                    value={b}
+                    name={b}
+                    checked={b === brand}
+                    onChange={handleBrand}
+                    className="py-1"
+                >
+                    {b}
+                </Radio>
+            </div>
+        ));
+    };
+
+    const handleBrand = (e) => {
+        setSubCategory("");
+        dispatch({
+            type: "SEARCH_QUERY",
+            payload: { text: "" },
+        });
+        setPrice([0, 0]);
+        setCategoryIds([]);
+        setStar("");
+        setBrand(e.target.value);
+        fetchProducts({ brand: e.target.value });
     };
 
     return (
@@ -242,6 +278,17 @@ const Shop = () => {
                             }
                         >
                             <div className="px-4">{showSubCategories()}</div>
+                        </SubMenu>
+                        {/* Brands */}
+                        <SubMenu
+                            key="5"
+                            title={
+                                <span className="h6">
+                                    <TagsOutlined /> Brands
+                                </span>
+                            }
+                        >
+                            <div className="px-4">{showBrands()}</div>
                         </SubMenu>
                     </Menu>
                 </div>
