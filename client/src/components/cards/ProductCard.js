@@ -4,11 +4,32 @@ import { Card } from "antd";
 import laptop from "../../images/laptop.png";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { showAverage } from "../../functions/rating";
+import _ from "lodash";
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
     const { title, description, images, price, slug } = product;
+
+    const handleAddToCart = () => {
+        // create card array
+        let cart = [];
+        if (typeof window !== "undefined") {
+            // if cart is in local storage GET it
+            if (localStorage.getItem("cart")) {
+                cart = JSON.parse(localStorage.getItem("cart"));
+            }
+            // push new product to cart
+            cart.push({
+                ...product,
+                count: 1,
+            });
+            // remove duplicates
+            let unique = _.uniqWith(cart, _.isEqual);
+            // save to localstorage
+            localStorage.setItem("cart", JSON.stringify(unique));
+        }
+    };
 
     return (
         <>
@@ -35,8 +56,11 @@ const ProductCard = ({ product }) => {
                         Product
                     </Link>,
                     <>
-                        <ShoppingCartOutlined className="text-danger" /> <br />{" "}
-                        Add To Cart
+                        <a onClick={handleAddToCart}>
+                            <ShoppingCartOutlined className="text-danger" />
+                            <br />
+                            Add To Cart
+                        </a>
                     </>,
                 ]}
             >
