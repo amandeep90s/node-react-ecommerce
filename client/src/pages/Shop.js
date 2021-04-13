@@ -10,6 +10,7 @@ import {
     DownSquareOutlined,
     LoadingOutlined,
     StarOutlined,
+    TagsOutlined,
 } from "@ant-design/icons";
 import Star from "../components/forms/Star";
 
@@ -236,7 +237,7 @@ const Shop = () => {
                             key="4"
                             title={
                                 <span className="h6">
-                                    <DownSquareOutlined /> Sub Categories
+                                    <TagsOutlined /> Sub Categories
                                 </span>
                             }
                         >
