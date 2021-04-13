@@ -3,3 +3,6 @@
     height: 450px;
     object-fit: cover;
 }
+.search-filter .ant-menu-sub.ant-menu-inline {
+    background: #fff !important;
+}

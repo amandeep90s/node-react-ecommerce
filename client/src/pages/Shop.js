@@ -6,15 +6,18 @@ import { getSubCategories } from "../functions/sub-category";
 import ProductCard from "../components/cards/ProductCard";
 import { Checkbox, Menu, Radio, Slider, Spin } from "antd";
 import {
+    AntDesignOutlined,
+    BgColorsOutlined,
     DollarOutlined,
     DownSquareOutlined,
     LoadingOutlined,
     StarOutlined,
     TagsOutlined,
+    TransactionOutlined,
 } from "@ant-design/icons";
 import Star from "../components/forms/Star";
 
-const { SubMenu, ItemGroup } = Menu;
+const { SubMenu } = Menu;
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -28,6 +31,9 @@ const Shop = () => {
     const [subCategory, setSubCategory] = useState("");
     const brands = ["Microsoft", "Apple", "Dell", "Lenovo", "Asus"];
     const [brand, setBrand] = useState("");
+    const colors = ["Black", "Brown", "Silver", "White", "Blue"];
+    const [color, setColor] = useState("");
+    const [shipping, setShipping] = useState("");
 
     let dispatch = useDispatch();
     const { search } = useSelector((state) => ({ ...state }));
@@ -87,6 +93,9 @@ const Shop = () => {
         setStar("");
         setSubCategory("");
         setBrand("");
+        setColor();
+        setShipping("");
+
         setTimeout(() => {
             setOk(!ok);
         }, 500);
@@ -119,6 +128,8 @@ const Shop = () => {
         setStar("");
         setSubCategory("");
         setBrand("");
+        setColor();
+        setShipping("");
 
         let inTheState = [...categoryIds];
         let justChecked = e.target.value;
@@ -147,16 +158,38 @@ const Shop = () => {
         setStar(number);
         setSubCategory("");
         setBrand("");
+        setColor();
+        setShipping("");
         fetchProducts({ stars: number });
     };
 
     const showStars = () => (
         <div className="px-4 pb-2">
-            <Star starClick={handleStarClick} numberOfStars={5} />
-            <Star starClick={handleStarClick} numberOfStars={4} />
-            <Star starClick={handleStarClick} numberOfStars={3} />
-            <Star starClick={handleStarClick} numberOfStars={2} />
-            <Star starClick={handleStarClick} numberOfStars={1} />
+            <Star
+                starClick={handleStarClick}
+                numberOfStars={5}
+                starColor={star === 5 ? "green" : "red"}
+            />
+            <Star
+                starClick={handleStarClick}
+                numberOfStars={4}
+                starColor={star === 4 ? "green" : "red"}
+            />
+            <Star
+                starClick={handleStarClick}
+                numberOfStars={3}
+                starColor={star === 3 ? "green" : "red"}
+            />
+            <Star
+                starClick={handleStarClick}
+                numberOfStars={2}
+                starColor={star === 2 ? "green" : "red"}
+            />
+            <Star
+                starClick={handleStarClick}
+                numberOfStars={1}
+                starColor={star === 1 ? "green" : "red"}
+            />
         </div>
     );
 
@@ -167,7 +200,9 @@ const Shop = () => {
                 key={s._id}
                 onClick={() => handleSub(s)}
                 style={{ cursor: "pointer" }}
-                className="p-1 m-1 badge badge-secondary"
+                className={`p-1 m-1 badge ${
+                    subCategory === s ? "badge-primary" : "badge-secondary"
+                } `}
             >
                 {s.name}
             </div>
@@ -183,6 +218,8 @@ const Shop = () => {
         setCategoryIds([]);
         setStar("");
         setBrand("");
+        setColor();
+        setShipping("");
         fetchProducts({ sub });
     };
 
@@ -213,13 +250,87 @@ const Shop = () => {
         setCategoryIds([]);
         setStar("");
         setBrand(e.target.value);
+        setColor();
+        setShipping("");
         fetchProducts({ brand: e.target.value });
+    };
+
+    // 8. products by colors
+    const showColors = () => {
+        return colors.map((c, i) => (
+            <div key={i}>
+                <Radio
+                    value={c}
+                    name={c}
+                    checked={c === color}
+                    onChange={handleColor}
+                    className="py-1"
+                >
+                    {c}
+                </Radio>
+            </div>
+        ));
+    };
+
+    const handleColor = (e) => {
+        setSubCategory("");
+        dispatch({
+            type: "SEARCH_QUERY",
+            payload: { text: "" },
+        });
+        setPrice([0, 0]);
+        setCategoryIds([]);
+        setStar("");
+        setBrand("");
+        setColor(e.target.value);
+        setShipping("");
+        fetchProducts({ color: e.target.value });
+    };
+
+    // 9. products by shipping
+    const showShipping = () => {
+        return (
+            <>
+                <Checkbox
+                    className="px-4 pb-2"
+                    onChange={handleShipping}
+                    value="Yes"
+                    checked={shipping === "Yes"}
+                >
+                    Yes
+                </Checkbox>
+                <br />
+                <Checkbox
+                    className="px-4 pb-2"
+                    onChange={handleShipping}
+                    value="No"
+                    checked={shipping === "No"}
+                >
+                    No
+                </Checkbox>
+            </>
+        );
+    };
+
+    const handleShipping = (e) => {
+        setSubCategory("");
+        dispatch({
+            type: "SEARCH_QUERY",
+            payload: { text: "" },
+        });
+        setPrice([0, 0]);
+        setCategoryIds([]);
+        setStar("");
+        setBrand("");
+        setColor("");
+        setShipping(e.target.value);
+        fetchProducts({ shipping: e.target.value });
     };
 
     return (
         <div className="container-fluid py-3">
             <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-3 search-filter">
                     <h4>Search/Filter</h4>
                     <hr />
                     <Menu
@@ -284,11 +395,33 @@ const Shop = () => {
                             key="5"
                             title={
                                 <span className="h6">
-                                    <TagsOutlined /> Brands
+                                    <AntDesignOutlined /> Brands
                                 </span>
                             }
                         >
                             <div className="px-4">{showBrands()}</div>
+                        </SubMenu>
+                        {/* Colors */}
+                        <SubMenu
+                            key="6"
+                            title={
+                                <span className="h6">
+                                    <BgColorsOutlined /> Colors
+                                </span>
+                            }
+                        >
+                            <div className="px-4">{showColors()}</div>
+                        </SubMenu>
+                        {/* Shipping */}
+                        <SubMenu
+                            key="7"
+                            title={
+                                <span className="h6">
+                                    <TransactionOutlined /> Shipping
+                                </span>
+                            }
+                        >
+                            <div className="px-4">{showShipping()}</div>
                         </SubMenu>
                     </Menu>
                 </div>
