@@ -11,6 +11,10 @@ const Cart = () => {
         }, 0);
     };
 
+    const saveOrderToDb = () => {
+        //
+    };
+
     return (
         <div className="container-fluid py-3">
             <div className="row">
@@ -40,13 +44,24 @@ const Cart = () => {
                     Total : <strong>${getTotal()}</strong>
                     <hr />
                     {user ? (
-                        <h4 className="btn btn-sm btn-primary mt-2">
+                        <button
+                            onClick={saveOrderToDb}
+                            className="btn btn-sm btn-primary mt-2"
+                            disabled={!cart.length}
+                        >
                             Proceed to Checkout
-                        </h4>
+                        </button>
                     ) : (
-                        <h4 className="btn btn-sm btn-primary mt-2">
-                            Login to Checkout
-                        </h4>
+                        <button className="btn btn-sm btn-primary mt-2">
+                            <Link
+                                to={{
+                                    pathname: "/login",
+                                    state: { from: "cart" },
+                                }}
+                            >
+                                Login to Checkout
+                            </Link>
+                        </button>
                     )}
                 </div>
             </div>
