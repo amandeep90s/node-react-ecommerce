@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Menu } from "antd";
+import { Badge, Menu } from "antd";
 import {
     AppstoreOutlined,
     LogoutOutlined,
     SettingOutlined,
+    ShoppingCartOutlined,
     ShoppingOutlined,
     UserAddOutlined,
     UserOutlined,
@@ -19,7 +20,7 @@ const { Item, SubMenu } = Menu;
 const Header = () => {
     const [current, setCurrent] = useState("home");
     let history = useHistory();
-    let { user } = useSelector((state) => ({ ...state }));
+    let { user, cart } = useSelector((state) => ({ ...state }));
     let disptach = useDispatch();
 
     const handleClick = (e) => {
@@ -45,6 +46,14 @@ const Header = () => {
 
             <Item key="shop" icon={<ShoppingOutlined />}>
                 <Link to="/shop">Shop</Link>
+            </Item>
+
+            <Item key="cart" icon={<ShoppingCartOutlined />}>
+                <Link to="/cart">
+                    <Badge count={cart.length} offset={[9, 0]}>
+                        Cart
+                    </Badge>
+                </Link>
             </Item>
 
             {!user && (

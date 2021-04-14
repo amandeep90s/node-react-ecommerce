@@ -5,12 +5,17 @@ import laptop from "../../images/laptop.png";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
     const [tooltip, setTooltip] = useState("Click to add");
     const { title, description, images, price, slug } = product;
+
+    // redux
+    const { user, cart } = useSelector((state) => ({ ...state }));
+    const dispatch = useDispatch();
 
     const handleAddToCart = () => {
         // create card array
@@ -31,6 +36,11 @@ const ProductCard = ({ product }) => {
             localStorage.setItem("cart", JSON.stringify(unique));
             // show tooltip
             setTooltip("Added");
+            // add to redux
+            dispatch({
+                type: "ADD_TO_CART",
+                payload: unique,
+            });
         }
     };
 
