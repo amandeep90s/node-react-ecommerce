@@ -3,6 +3,11 @@ import { useDispatch } from "react-redux";
 import ModalImage from "react-modal-image";
 import { toast } from "react-toastify";
 import Laptop from "../../images/laptop.png";
+import {
+    CheckCircleOutlined,
+    CloseCircleOutlined,
+    CloseOutlined,
+} from "@ant-design/icons";
 
 const ProductCardInCheckout = ({ product }) => {
     const colors = ["Black", "Brown", "Silver", "White", "Blue"];
@@ -62,6 +67,29 @@ const ProductCardInCheckout = ({ product }) => {
         }
     };
 
+    const handleRemove = () => {
+        let cart = [];
+        if (typeof window !== "undefined") {
+            if (localStorage.getItem("cart")) {
+                cart = JSON.parse(localStorage.getItem("cart"));
+            }
+
+            cart.map((p, index) => {
+                if (product._id === p._id) {
+                    cart.splice(index, 1);
+                }
+                return cart;
+            });
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            // update to redux
+            dispatch({
+                type: "ADD_TO_CART",
+                payload: cart,
+            });
+        }
+    };
+
     return (
         <tbody>
             <tr>
@@ -106,8 +134,19 @@ const ProductCardInCheckout = ({ product }) => {
                         max={100}
                     />
                 </td>
-                <td>Shipping icon</td>
-                <td>Delete icon</td>
+                <td align="center">
+                    {product.shipping === "Yes" ? (
+                        <CheckCircleOutlined className="text-center text-success" />
+                    ) : (
+                        <CloseCircleOutlined className="text-center text-danger" />
+                    )}
+                </td>
+                <td align="center">
+                    <CloseOutlined
+                        className="text-danger"
+                        onClick={handleRemove}
+                    />
+                </td>
             </tr>
         </tbody>
     );
