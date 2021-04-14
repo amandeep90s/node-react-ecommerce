@@ -14,6 +14,7 @@ import AdminRoute from "./components/routes/AdminRoute";
 // Pages
 import Home from "./pages/Home";
 import CategoryHome from "./pages/category/CategoryHome";
+import Cart from "./pages/Cart";
 import SubCategoryHome from "./pages/sub/SubCategoryHome";
 import Product from "./pages/Product";
 import Login from "./pages/auth/Login";
@@ -91,6 +92,7 @@ const App = () => {
                 />
                 <Route exact path="/product/:slug" component={Product} />
                 <Route exact path="/shop" component={Shop} />
+                <Route exact path="/cart" component={Cart} />
 
                 {/* User Routes */}
                 <UserRoute exact path="/user/history" component={History} />
