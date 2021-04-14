@@ -21,6 +21,10 @@ const NewArrivals = () => {
         };
 
         loadAllProducts();
+
+        return () => {
+            setProducts([]);
+        };
     }, [page]);
 
     useEffect(() => {

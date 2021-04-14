@@ -15,6 +15,10 @@ const SubCategoryList = () => {
             setSubCategories(c.data);
             setLoading(false);
         });
+
+        return () => {
+            setSubCategories([]);
+        };
     }, []);
 
     const showSubCategories = () =>

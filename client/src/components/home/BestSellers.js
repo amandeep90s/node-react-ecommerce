@@ -21,6 +21,10 @@ const BestSellers = () => {
         };
 
         loadAllProducts();
+
+        return () => {
+            setProducts([]);
+        };
     }, [page]);
 
     useEffect(() => {

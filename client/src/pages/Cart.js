@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProductCardInCheckout from "../components/cards/ProductCardInCheckout";
 
@@ -43,7 +43,7 @@ const Cart = () => {
                     <h4>Cart / {cart.length} Product(s)</h4>
                     {!cart.length ? (
                         <p className="lead">
-                            No products in cart.{" "}
+                            No products in cart.
                             <Link to="/shop">Continue Shopping</Link>{" "}
                         </p>
                     ) : (

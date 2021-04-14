@@ -69,11 +69,14 @@ const ProductCard = ({ product }) => {
                         Product
                     </Link>,
                     <Tooltip title={tooltip}>
-                        <a onClick={handleAddToCart}>
+                        <div
+                            style={{ cursor: "pointer" }}
+                            onClick={handleAddToCart}
+                        >
                             <ShoppingCartOutlined className="text-danger" />
                             <br />
                             Add To Cart
-                        </a>
+                        </div>
                     </Tooltip>,
                 ]}
             >

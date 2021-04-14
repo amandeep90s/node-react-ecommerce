@@ -21,6 +21,7 @@ const SingleProduct = ({ product, onStarClick, star }) => {
 
     // redux
     const { user, cart } = useSelector((state) => ({ ...state }));
+
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {
@@ -94,11 +95,14 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                 <Card
                     actions={[
                         <Tooltip title={tooltip}>
-                            <a onClick={handleAddToCart}>
+                            <div
+                                style={{ cursor: "pointer" }}
+                                onClick={handleAddToCart}
+                            >
                                 <ShoppingCartOutlined className="text-success" />
                                 <br />
                                 Add To Cart
-                            </a>
+                            </div>
                         </Tooltip>,
                         <Link to="/">
                             <HeartOutlined className="text-info" />
