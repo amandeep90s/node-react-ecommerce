@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserCart } from "../functions/user";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 const Checkout = () => {
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
-    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
     const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        setLoading(true);
         getUserCart(user.token).then((res) => {
             setProducts(res.data.products);
             setTotal(res.data.cartTotal);
-            setLoading(false);
         });
 
         return () => setProducts([]);
-    }, []);
+    }, [user.token]);
 
     const saveAddressToDb = () => {
         //
@@ -48,24 +43,29 @@ const Checkout = () => {
                 </div>
                 <div className="col-md-6">
                     <h4>Order Summary</h4>
-                    <h1>{total}</h1>
-                    {JSON.stringify(products)}
                     <hr />
-                    <p>Products</p>
+                    <p>{products.length} Product(s) in cart</p>
                     <hr />
-                    <p>List of products</p>
+                    {products.map((p, i) => (
+                        <div key={i}>
+                            <p>
+                                {p.product.title} ({p.color}) x {p.count} ={" "}
+                                <strong>{p.product.price * p.count}</strong>
+                            </p>
+                        </div>
+                    ))}
                     <hr />
-                    <p>Cart total: $x</p>
+                    <h5>Cart total: ${total}</h5>
 
                     <div className="row">
                         <div className="col-md-6">
-                            <button className="btn btn-primary">
+                            <button className="btn btn-primary btn-raised">
                                 Place Order
                             </button>
                         </div>
 
                         <div className="col-md-6">
-                            <button className="btn btn-primary">
+                            <button className="btn btn-danger btn-raised">
                                 Empty Cart
                             </button>
                         </div>
