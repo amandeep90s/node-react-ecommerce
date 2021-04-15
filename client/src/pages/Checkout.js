@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserCart } from "../functions/user";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Checkout = () => {
+    const [products, setProducts] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false);
+
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => ({ ...state }));
+
+    useEffect(() => {
+        setLoading(true);
+        getUserCart(user.token).then((res) => {
+            setProducts(res.data.products);
+            setTotal(res.data.cartTotal);
+            setLoading(false);
+        });
+
+        return () => setProducts([]);
+    }, []);
+
     const saveAddressToDb = () => {
         //
     };
 
     return (
-        <div className="container">
+        <div className="container-fluid py-3">
             <div className="row">
                 <div className="col-md-6">
                     <h4>Delivery Address</h4>
@@ -26,6 +48,8 @@ const Checkout = () => {
                 </div>
                 <div className="col-md-6">
                     <h4>Order Summary</h4>
+                    <h1>{total}</h1>
+                    {JSON.stringify(products)}
                     <hr />
                     <p>Products</p>
                     <hr />

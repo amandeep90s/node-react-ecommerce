@@ -8,7 +8,7 @@ const { authCheck } = require("../middlewares/auth");
 // controllers
 const { userCart, getUserCart } = require("../controllers/user");
 
-router.post("/user/cart", authCheck, userCart);
 router.get("/user/cart", authCheck, getUserCart);
+router.post("/user/cart", authCheck, userCart);
 
 module.exports = router;
