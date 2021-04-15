@@ -26,6 +26,7 @@ import History from "./pages/user/History";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
 import Shop from "./pages/Shop";
+import Checkout from "./pages/Checkout";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -95,6 +96,7 @@ const App = () => {
                 <Route exact path="/product/:slug" component={Product} />
                 <Route exact path="/shop" component={Shop} />
                 <Route exact path="/cart" component={Cart} />
+                <Route exact path="/checkout" component={Checkout} />
 
                 {/* User Routes */}
                 <UserRoute exact path="/user/history" component={History} />
