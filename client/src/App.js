@@ -10,6 +10,7 @@ import { currentUser } from "./functions/auth";
 import Header from "./components/nav/Header";
 import UserRoute from "./components/routes/UserRoute";
 import AdminRoute from "./components/routes/AdminRoute";
+import SideDrawer from "./components/drawer/SideDrawer";
 
 // Pages
 import Home from "./pages/Home";
@@ -69,6 +70,7 @@ const App = () => {
     return (
         <>
             <Header />
+            <SideDrawer />
             <ToastContainer />
             <Switch>
                 <Route exact path="/" component={Home} />
