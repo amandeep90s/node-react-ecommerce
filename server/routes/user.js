@@ -6,9 +6,10 @@ const router = express.Router();
 const { authCheck } = require("../middlewares/auth");
 
 // controllers
-const { userCart, getUserCart } = require("../controllers/user");
+const { emptyCart, userCart, getUserCart } = require("../controllers/user");
 
 router.get("/user/cart", authCheck, getUserCart);
 router.post("/user/cart", authCheck, userCart);
+router.delete("/user/cart", authCheck, emptyCart);
 
 module.exports = router;

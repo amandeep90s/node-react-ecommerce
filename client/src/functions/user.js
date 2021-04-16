@@ -19,3 +19,11 @@ export const getUserCart = async (authtoken) =>
             authtoken,
         },
     });
+
+// remove user cart
+export const emptyUserCart = async (authtoken) =>
+    await axios.delete(`${process.env.REACT_APP_API_URL}/user/cart`, {
+        headers: {
+            authtoken,
+        },
+    });
