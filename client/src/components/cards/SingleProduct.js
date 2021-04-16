@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Card, Tabs, Tooltip } from "antd";
 import _ from "lodash";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
@@ -18,9 +18,6 @@ const { TabPane } = Tabs;
 const SingleProduct = ({ product, onStarClick, star }) => {
     const [tooltip, setTooltip] = useState("Click to add");
     const { _id, title, images, description } = product;
-
-    // redux
-    const { user, cart } = useSelector((state) => ({ ...state }));
 
     const dispatch = useDispatch();
 

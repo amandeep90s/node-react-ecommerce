@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { emptyUserCart, getUserCart, saveUserAddress } from "../functions/user";
 import { toast } from "react-toastify";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 
 const Checkout = () => {
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState();
     const [addressSaved, setAddressSaved] = useState(false);
 
     const dispatch = useDispatch();
@@ -55,13 +53,18 @@ const Checkout = () => {
             <div className="row">
                 <div className="col-md-6">
                     <h4>Delivery Address</h4>
-                    <ReactQuill
-                        theme="snow"
+                    <textarea
+                        name="address"
+                        id="address"
+                        cols="30"
+                        rows="4"
+                        className="form-control"
+                        placeholder="Enter your address"
                         value={address}
-                        onChange={setAddress}
-                    />
+                        onChange={(e) => setAddress(e.target.value)}
+                    ></textarea>
                     <button
-                        className="btn btn-primary mt-2"
+                        className="btn btn-primary btn-info btn-raised mt-2"
                         onClick={saveAddressToDb}
                     >
                         Save

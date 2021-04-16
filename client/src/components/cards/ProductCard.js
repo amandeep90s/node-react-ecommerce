@@ -5,7 +5,7 @@ import laptop from "../../images/laptop.png";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const { Meta } = Card;
 
@@ -14,7 +14,6 @@ const ProductCard = ({ product }) => {
     const { title, description, images, price, slug } = product;
 
     // redux
-    const { user, cart } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {
