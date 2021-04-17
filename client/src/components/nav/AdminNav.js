@@ -50,7 +50,7 @@ const AdminNav = () => {
                 </li>
 
                 <li className="nav-item">
-                    <Link to="/admin/coupon" className="nav-link">
+                    <Link to="/admin/coupons" className="nav-link">
                         <DollarOutlined className="mr-1" />
                         Coupon
                     </Link>

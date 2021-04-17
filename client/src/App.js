@@ -37,6 +37,7 @@ import SubCategoryUpdate from "./pages/admin/sub-category/SubCategoryUpdate";
 import ProductCreate from "./pages/admin/product/ProductCreate";
 import ProductUpdate from "./pages/admin/product/ProductUpdate";
 import AllProducts from "./pages/admin/product/AllProducts";
+import CreateCoupon from "./pages/admin/coupon/CreateCoupon";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -143,6 +144,11 @@ const App = () => {
                     exact
                     path="/admin/products"
                     component={AllProducts}
+                />
+                <AdminRoute
+                    exact
+                    path="/admin/coupons"
+                    component={CreateCoupon}
                 />
             </Switch>
         </>
