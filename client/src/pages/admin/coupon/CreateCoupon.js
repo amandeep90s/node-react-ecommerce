@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
     createCoupon,
     getCoupons,
-    getCoupon,
-    updatecoupon,
     removeCoupon,
 } from "../../../functions/coupon";
 import { Spin } from "antd";
-import {
-    DeleteOutlined,
-    EditOutlined,
-    LoadingOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import AdminNav from "../../../components/nav/AdminNav";
 
 const CreateCoupon = () => {
@@ -26,8 +20,6 @@ const CreateCoupon = () => {
     const [loading, setLoading] = useState(false);
 
     const { user } = useSelector((state) => ({ ...state }));
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         loadAllCoupons();
@@ -180,7 +172,6 @@ const CreateCoupon = () => {
                                     </td>
                                     <td>{c.discount}%</td>
                                     <td>
-                                        <EditOutlined className="text-primary pointer mr-2" />
                                         <DeleteOutlined
                                             onClick={() => handleRemove(c._id)}
                                             className="text-danger pointer"
