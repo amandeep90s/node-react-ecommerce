@@ -20,6 +20,9 @@ import AdminNav from "../../../components/nav/AdminNav";
 
 const CreateCoupon = () => {
     const [coupons, setCoupons] = useState([]);
+    const [name, setName] = useState("");
+    const [expiry, setExpiry] = useState("");
+    const [discount, setDiscount] = useState("");
     const [loading, setLoading] = useState(false);
 
     const { user } = useSelector((state) => ({ ...state }));
@@ -28,6 +31,20 @@ const CreateCoupon = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
+        createCoupon({ name, expiry, discount }, user.token)
+            .then((res) => {
+                setName("");
+                setExpiry("");
+                setDiscount("");
+                setLoading(false);
+                toast.success(`${res.data.name} Coupon created successfully.`);
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoading(false);
+                toast.error(error.message);
+            });
     };
 
     return (
@@ -48,6 +65,69 @@ const CreateCoupon = () => {
                     ) : (
                         <h4>Coupons</h4>
                     )}
+
+                    <form onSubmit={handleSubmit} className="row">
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <label htmlFor="name" className="text-muted">
+                                    Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    className="form-control"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <label
+                                    htmlFor="discount"
+                                    className="text-muted"
+                                >
+                                    Discount %
+                                </label>
+                                <input
+                                    type="text"
+                                    name="discount"
+                                    id="discount"
+                                    className="form-control"
+                                    value={discount}
+                                    onChange={(e) =>
+                                        setDiscount(e.target.value)
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="form-group">
+                                <label htmlFor="expiry" className="text-muted">
+                                    Expiry
+                                </label>
+                                <br />
+                                <DatePicker
+                                    className="form-control w-100"
+                                    selected={new Date()}
+                                    value={expiry}
+                                    onChange={(date) => setExpiry(date)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <button className="btn btn-primary btn-raised">
+                                Save
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
