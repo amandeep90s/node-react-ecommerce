@@ -8,6 +8,7 @@ const Checkout = () => {
     const [total, setTotal] = useState(0);
     const [address, setAddress] = useState();
     const [addressSaved, setAddressSaved] = useState(false);
+    const [coupon, setCoupon] = useState("");
 
     const dispatch = useDispatch();
     const { user } = useSelector((state) => ({ ...state }));
@@ -48,45 +49,78 @@ const Checkout = () => {
         });
     };
 
+    const showAddress = () => (
+        <>
+            <textarea
+                name="address"
+                id="address"
+                cols="30"
+                rows="4"
+                className="form-control"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+            ></textarea>
+            <button
+                className="btn btn-primary btn-info btn-raised mt-2"
+                onClick={saveAddressToDb}
+            >
+                Save
+            </button>
+        </>
+    );
+
+    const showProductSummary = () =>
+        products.map((p, i) => (
+            <div key={i}>
+                <p>
+                    {p.product.title} ({p.color}) x {p.count} ={" "}
+                    <strong>{p.product.price * p.count}</strong>
+                </p>
+            </div>
+        ));
+
+    const applyDiscountCoupon = () => {
+        //
+        console.log(coupon);
+    };
+
+    const showApplyCoupon = () => (
+        <>
+            <input
+                type="text"
+                name="coupon"
+                id="coupon"
+                onChange={(e) => setCoupon(e.target.value)}
+                value={coupon}
+                className="form-control"
+            />
+
+            <button
+                onClick={applyDiscountCoupon}
+                className="btn btn-warning btn-raised mt-2"
+            >
+                Apply
+            </button>
+        </>
+    );
+
     return (
         <div className="container-fluid py-3">
             <div className="row">
                 <div className="col-md-6">
                     <h4>Delivery Address</h4>
-                    <textarea
-                        name="address"
-                        id="address"
-                        cols="30"
-                        rows="4"
-                        className="form-control"
-                        placeholder="Enter your address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    ></textarea>
-                    <button
-                        className="btn btn-primary btn-info btn-raised mt-2"
-                        onClick={saveAddressToDb}
-                    >
-                        Save
-                    </button>
-                    <hr />
-                    <h4>Got Coupon?</h4>
-                    <br />
-                    coupon input and apply coupon
+                    {showAddress()}
+
+                    <h4 className="mt-4">Got Coupon?</h4>
+                    {showApplyCoupon()}
                 </div>
                 <div className="col-md-6">
                     <h4>Order Summary</h4>
                     <hr />
                     <p>{products.length} Product(s) in cart</p>
                     <hr />
-                    {products.map((p, i) => (
-                        <div key={i}>
-                            <p>
-                                {p.product.title} ({p.color}) x {p.count} ={" "}
-                                <strong>{p.product.price * p.count}</strong>
-                            </p>
-                        </div>
-                    ))}
+                    {showProductSummary()}
                     <hr />
                     <h5>Cart total: ${total}</h5>
 
