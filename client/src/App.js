@@ -27,6 +27,7 @@ import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
 import Shop from "./pages/Shop";
 import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -103,6 +104,7 @@ const App = () => {
                 <UserRoute exact path="/user/password" component={Password} />
                 <UserRoute exact path="/user/wishlist" component={Wishlist} />
                 <UserRoute exact path="/checkout" component={Checkout} />
+                <UserRoute exact path="/payment" component={Payment} />
 
                 {/* Admin Routes */}
                 <AdminRoute

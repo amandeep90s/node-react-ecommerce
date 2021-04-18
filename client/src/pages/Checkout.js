@@ -8,7 +8,7 @@ import {
 } from "../functions/user";
 import { toast } from "react-toastify";
 
-const Checkout = () => {
+const Checkout = ({ history }) => {
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
     const [address, setAddress] = useState();
@@ -93,13 +93,21 @@ const Checkout = () => {
         applyCoupon(user.token, coupon).then((res) => {
             if (res.data) {
                 setTotalAfterDiscount(res.data);
-                // update redux coupon applied
+                // update redux coupon applied true / false
+                dispatch({
+                    type: "COUPON_APPLIED",
+                    payload: true,
+                });
             }
 
             if (res.data.err) {
                 setDiscountError(res.data.err);
                 toast.error(res.data.err);
-                // update redux coupon applied
+                // update redux coupon applied true / false
+                dispatch({
+                    type: "COUPON_APPLIED",
+                    payload: false,
+                });
             }
         });
     };
@@ -153,10 +161,10 @@ const Checkout = () => {
                     <h5>Cart total: ${total}</h5>
 
                     {totalAfterDiscount > 0 && (
-                        <h5 className="text-success">
+                        <div className="alert alert-success lead">
                             Discount Applied: Total Payable: $
                             {totalAfterDiscount}
-                        </h5>
+                        </div>
                     )}
 
                     <div className="row">
@@ -164,6 +172,7 @@ const Checkout = () => {
                             <button
                                 className="btn btn-primary btn-raised"
                                 disabled={!addressSaved || !products.length}
+                                onClick={() => history.push("/payment")}
                             >
                                 Place Order
                             </button>
