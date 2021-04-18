@@ -90,21 +90,27 @@ exports.applyCouponToUserCart = async (req, res) => {
     }
 
     const user = await User.findOne({ email: req.user.email }).exec();
-    let { products, cartTotal } = await Cart.findOne({ orderedBy: user._id })
+    const cartData = await Cart.findOne({ orderedBy: user._id })
         .populate("products.product", "_id title price")
         .exec();
+    if (cartData !== null) {
+        let { products, cartTotal } = cartData;
+        // Calculate the total after discount
+        let totalAfterDiscount = (
+            cartTotal -
+            (cartTotal * validCoupon.discount) / 100
+        ).toFixed(2);
 
-    // Calculate the total after discount
-    let totalAfterDiscount = (
-        cartTotal -
-        (cartTotal * validCoupon.discount) / 100
-    ).toFixed(2);
+        Cart.findOneAndUpdate(
+            { orderedBy: user._id },
+            { totalAfterDiscount },
+            { new: true }
+        );
 
-    Cart.findOneAndUpdate(
-        { orderedBy: user._id },
-        { totalAfterDiscount },
-        { new: true }
-    );
-
-    res.json(totalAfterDiscount);
+        res.json(totalAfterDiscount);
+    } else {
+        res.json({
+            err: "Cart is empty",
+        });
+    }
 };

@@ -14,7 +14,7 @@ const Checkout = () => {
     const [address, setAddress] = useState();
     const [addressSaved, setAddressSaved] = useState(false);
     const [coupon, setCoupon] = useState("");
-    const [totalAfterDiscount, setTotalAfterDiscount] = useState("");
+    const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
     const [discountError, setDiscountError] = useState("");
 
     const dispatch = useDispatch();
@@ -52,6 +52,7 @@ const Checkout = () => {
         emptyUserCart(user.token).then((res) => {
             setProducts([]);
             setTotal(0);
+            setTotalAfterDiscount(0);
             toast.success("Cart is empty. Contniue shopping.");
         });
     };
@@ -97,6 +98,7 @@ const Checkout = () => {
 
             if (res.data.err) {
                 setDiscountError(res.data.err);
+                toast.error(res.data.err);
                 // update redux coupon applied
             }
         });
@@ -108,7 +110,10 @@ const Checkout = () => {
                 type="text"
                 name="coupon"
                 id="coupon"
-                onChange={(e) => setCoupon(e.target.value)}
+                onChange={(e) => {
+                    setCoupon(e.target.value);
+                    setDiscountError("");
+                }}
                 value={coupon}
                 className="form-control"
             />
@@ -131,6 +136,12 @@ const Checkout = () => {
 
                     <h4 className="mt-4">Got Coupon?</h4>
                     {showApplyCoupon()}
+
+                    {discountError && (
+                        <div className="alert alert-danger">
+                            {discountError}
+                        </div>
+                    )}
                 </div>
                 <div className="col-md-6">
                     <h4>Order Summary</h4>
@@ -140,6 +151,13 @@ const Checkout = () => {
                     {showProductSummary()}
                     <hr />
                     <h5>Cart total: ${total}</h5>
+
+                    {totalAfterDiscount > 0 && (
+                        <h5 className="text-success">
+                            Discount Applied: Total Payable: $
+                            {totalAfterDiscount}
+                        </h5>
+                    )}
 
                     <div className="row">
                         <div className="col-md-6">
