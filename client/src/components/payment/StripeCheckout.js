@@ -3,8 +3,13 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { createPaymentIntent } from "../../functions/stripe";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Card, Spin } from "antd";
+import {
+    CheckOutlined,
+    DollarOutlined,
+    LoadingOutlined,
+} from "@ant-design/icons";
+import Laptop from "../../images/laptop.png";
 
 const StripeCheckout = ({ history }) => {
     const [succeeded, setSucceeded] = useState(false);
@@ -12,6 +17,9 @@ const StripeCheckout = ({ history }) => {
     const [processing, setProcessing] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [clientSecret, setClientSecret] = useState("");
+    const [cartTotal, setCartTotal] = useState(0);
+    const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
+    const [payable, setPayable] = useState(0);
 
     const dispatch = useDispatch();
     const { user, coupon } = useSelector((state) => ({ ...state }));
@@ -22,6 +30,10 @@ const StripeCheckout = ({ history }) => {
     useEffect(() => {
         createPaymentIntent(user.token, coupon).then((res) => {
             setClientSecret(res.data.clientSecret);
+            // additional response received on successfull payment
+            setCartTotal(res.data.cartTotal);
+            setTotalAfterDiscount(res.data.totalAfterDiscount);
+            setPayable(res.data.payable);
         });
     }, []);
 
@@ -79,20 +91,48 @@ const StripeCheckout = ({ history }) => {
 
     return (
         <>
-            <p
-                className={
-                    succeeded ? "result-message" : "result-message hidden"
-                }
-            >
-                Payment Successfull.
-                <Link to="/user/history" className="mr-2">
-                    See it in your purchase history.
-                </Link>
-            </p>
+            {!succeeded && (
+                <div>
+                    {coupon && totalAfterDiscount !== undefined ? (
+                        <div className="alert alert-success">
+                            {`Total after discount: $${totalAfterDiscount}`}
+                        </div>
+                    ) : (
+                        <div className="alert alert-danger">
+                            No coupon applied
+                        </div>
+                    )}
+                </div>
+            )}
+            <div className="text-center">
+                <Card
+                    className="px-1 pt-1"
+                    cover={
+                        <img
+                            src={Laptop}
+                            style={{
+                                height: "200px",
+                                objectFit: "cover",
+                                marginBottom: "-50px",
+                            }}
+                        />
+                    }
+                    actions={[
+                        <>
+                            <DollarOutlined className="text-info" /> <br />
+                            Total: ${cartTotal}
+                        </>,
+                        <>
+                            <CheckOutlined className="text-info" /> <br />
+                            Total Payable: ${(payable / 100).toFixed(2)}
+                        </>,
+                    ]}
+                />
+            </div>
 
             <form
                 id="payment-form"
-                className="stripe-form"
+                className="stripe-form mt-5"
                 onSubmit={handleSubmit}
             >
                 <CardElement
@@ -127,6 +167,17 @@ const StripeCheckout = ({ history }) => {
                         </div>
                     </>
                 )}
+
+                <p
+                    className={
+                        succeeded ? "result-message" : "result-message hidden"
+                    }
+                >
+                    Payment Successfull.
+                    <Link to="/user/history" className="mr-2">
+                        See it in your purchase history.
+                    </Link>
+                </p>
             </form>
         </>
     );
