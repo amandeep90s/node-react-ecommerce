@@ -14,13 +14,13 @@ const StripeCheckout = ({ history }) => {
     const [clientSecret, setClientSecret] = useState("");
 
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => ({ ...state }));
+    const { user, coupon } = useSelector((state) => ({ ...state }));
 
     const stripe = useStripe();
     const elements = useElements();
 
     useEffect(() => {
-        createPaymentIntent(user.token).then((res) => {
+        createPaymentIntent(user.token, coupon).then((res) => {
             setClientSecret(res.data.clientSecret);
         });
     }, []);
