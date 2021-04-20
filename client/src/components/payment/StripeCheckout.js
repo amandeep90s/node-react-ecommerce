@@ -192,7 +192,9 @@ const StripeCheckout = ({ history }) => {
 
                 <p
                     className={
-                        succeeded ? "result-message" : "result-message hidden"
+                        succeeded
+                            ? "result-message mt-4"
+                            : "result-message hidden mt-4"
                     }
                 >
                     Payment Successfull.
