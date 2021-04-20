@@ -84,8 +84,10 @@ const StripeCheckout = ({ history }) => {
                     succeeded ? "result-message" : "result-message hidden"
                 }
             >
-                Payment Successfull
-                <Link to="/user/history">See it in your purchase history.</Link>
+                Payment Successfull.
+                <Link to="/user/history" className="mr-2">
+                    See it in your purchase history.
+                </Link>
             </p>
 
             <form
