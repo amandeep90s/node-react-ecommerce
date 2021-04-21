@@ -4,7 +4,8 @@ import AdminNav from "../../components/nav/AdminNav";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { getOrders, orderStatus } from "../../functions/admin";
+import { getOrders, changeStatus } from "../../functions/admin";
+import Orders from "../../components/order/Orders";
 
 const AdminDashboard = () => {
     const [orders, setOrders] = useState([]);
@@ -27,7 +28,7 @@ const AdminDashboard = () => {
 
     const handleStatusChange = (orderId, orderStatus) => {
         setLoading(true);
-        orderStatus(orderId, orderStatus, user.token).then((res) => {
+        changeStatus(orderId, orderStatus, user.token).then((res) => {
             toast.success("Status updated");
             loadOrders();
         });
@@ -55,6 +56,11 @@ const AdminDashboard = () => {
                                 : "No purchase orders"}
                         </h4>
                     )}
+
+                    <Orders
+                        orders={orders}
+                        handleStatusChange={handleStatusChange}
+                    />
                 </div>
             </div>
         </div>

@@ -1,15 +1,16 @@
 import React from "react";
 
-const ShowPaymentInfo = ({ order }) => (
+const ShowPaymentInfo = ({ order, showStatus = true }) => (
     <div>
         <p>
             <span>Order Id: {order.paymentIntent.id}</span>
             {" / "}
             <span>
                 Amount:
-                {(order.paymentIntent.amount /= 100).toLocaleString("en-US", {
+                {(order.paymentIntent.amount / 100).toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
                     style: "currency",
-                    currency: "USD",
+                    currency: "INR",
                 })}
             </span>
             {" / "}
@@ -20,13 +21,17 @@ const ShowPaymentInfo = ({ order }) => (
             <span>Payment: {order.paymentIntent.status.toUpperCase()}</span>
             {" / "}
             <span>
-                Orderd on:{" / "}
+                Ordered on:{" / "}
                 {new Date(order.paymentIntent.created * 1000).toLocaleString()}
             </span>
-            {" / "}
-            <span className="badge bg-primary text-white">
-                STATUS: {order.orderStatus}
-            </span>
+            {showStatus && (
+                <>
+                    {" / "}
+                    <span className="badge bg-primary text-white">
+                        STATUS: {order.orderStatus}
+                    </span>
+                </>
+            )}
         </p>
     </div>
 );
