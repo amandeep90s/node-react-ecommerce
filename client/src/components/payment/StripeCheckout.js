@@ -137,6 +137,7 @@ const StripeCheckout = ({ history }) => {
                                 objectFit: "cover",
                                 marginBottom: "-50px",
                             }}
+                            alt="Product"
                         />
                     }
                     actions={[

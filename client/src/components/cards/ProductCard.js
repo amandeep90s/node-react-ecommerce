@@ -73,14 +73,17 @@ const ProductCard = ({ product }) => {
                         Product
                     </Link>,
                     <Tooltip title={tooltip}>
-                        <div
-                            style={{ cursor: "pointer" }}
+                        <a
+                            href="/#"
                             onClick={handleAddToCart}
+                            disabled={product.quantity < 1}
                         >
                             <ShoppingCartOutlined className="text-danger" />
                             <br />
-                            Add To Cart
-                        </div>
+                            {product.quantity < 1
+                                ? "Out of Stock"
+                                : "Add To Cart"}
+                        </a>
                     </Tooltip>,
                 ]}
             >
