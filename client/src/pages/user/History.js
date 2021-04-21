@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getUserOrders } from "../../functions/user";
 import UserNav from "../../components/nav/UserNav";
+import ShowPaymentInfo from "../../components/order/ShowPaymentInfo";
 import { Spin } from "antd";
 import {
     CheckCircleOutlined,
@@ -67,7 +68,7 @@ const History = () => {
     const showEachOrders = () =>
         orders.map((order, i) => (
             <div key={i} className="mx-3 my-4 p-3 card">
-                <p>show payment info</p>
+                <ShowPaymentInfo order={order} />
                 {showOrdersInTable(order)}
                 <div className="row">
                     <div className="col">
@@ -83,7 +84,7 @@ const History = () => {
                 <div className="col-md-2">
                     <UserNav />
                 </div>
-                <div className="col">
+                <div className="col text-center">
                     {loading ? (
                         <h4>
                             <Spin
@@ -93,7 +94,7 @@ const History = () => {
                             ...Loading
                         </h4>
                     ) : (
-                        <h4 className="text-center">
+                        <h4>
                             {orders.length > 0
                                 ? "User purchase orders"
                                 : "No purchase orders"}
