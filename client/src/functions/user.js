@@ -51,3 +51,11 @@ export const createOrder = async (stripeResponse, authtoken) =>
         { stripeResponse },
         { headers: { authtoken } }
     );
+
+// list user orders
+export const getUserOrders = async (authtoken) =>
+    await axios.get(`${process.env.REACT_APP_API_URL}/user/orders`, {
+        headers: {
+            authtoken,
+        },
+    });
