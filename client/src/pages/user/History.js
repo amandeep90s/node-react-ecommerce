@@ -28,7 +28,41 @@ const History = () => {
         loadUserOrders();
     }, [loadUserOrders]);
 
-    const showOrdersInTable = (order) => <p>each order and its products</p>;
+    const showOrdersInTable = (order) => (
+        <table className="table table-bordered text-center">
+            <thead className="thead-light">
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Shipping</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {order.products.map((p, i) => (
+                    <tr key={i}>
+                        <td>
+                            <strong>{p.product.title}</strong>
+                        </td>
+                        <td>${p.product.price}</td>
+                        <td>{p.product.brand}</td>
+                        <td>{p.product.color}</td>
+                        <td>{p.count}</td>
+                        <td>
+                            {p.product.shipping === "Yes" ? (
+                                <CheckCircleOutlined className="text-success" />
+                            ) : (
+                                <CloseCircleOutlined className="text-danger" />
+                            )}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
 
     const showEachOrders = () =>
         orders.map((order, i) => (
