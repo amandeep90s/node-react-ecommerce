@@ -3,12 +3,12 @@ const User = require("../models/user");
 
 // Get all orders
 exports.orders = async (req, res) => {
-    let orders = await Order.find({})
+    let allOrders = await Order.find({})
         .sort("-createdAt")
         .populate("products.product")
         .exec();
 
-    res.json(orders);
+    res.json(allOrders);
 };
 
 // Update order status
