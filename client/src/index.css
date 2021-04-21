@@ -9,3 +9,18 @@
 .pointer {
     cursor: pointer;
 }
+.processing {
+    border: solid 2px gold;
+}
+.not-processed {
+    border: solid 2px brown;
+}
+.dispatched {
+    border: solid 2px navy;
+}
+.cancelled {
+    border: solid 2px red;
+}
+.completed {
+    border: solid 2px green;
+}
