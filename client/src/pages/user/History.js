@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getUserOrders } from "../../functions/user";
 import UserNav from "../../components/nav/UserNav";
 import { Spin } from "antd";
@@ -16,17 +16,32 @@ const History = () => {
 
     const { user } = useSelector((state) => ({ ...state }));
 
-    useEffect(() => {
-        loadUserOrders();
-    }, []);
-
-    const loadUserOrders = () => {
+    const loadUserOrders = useCallback(() => {
         setLoading(true);
         getUserOrders(user.token).then((res) => {
             setLoading(false);
             setOrders(res.data);
         });
-    };
+    }, [user.token]);
+
+    useEffect(() => {
+        loadUserOrders();
+    }, [loadUserOrders]);
+
+    const showOrdersInTable = (order) => <p>each order and its products</p>;
+
+    const showEachOrders = () =>
+        orders.map((order, i) => (
+            <div key={i} className="mx-3 my-4 p-3 card">
+                <p>show payment info</p>
+                {showOrdersInTable(order)}
+                <div className="row">
+                    <div className="col">
+                        <p>PDF DOWNLOAD</p>
+                    </div>
+                </div>
+            </div>
+        ));
 
     return (
         <div className="container-fluid py-3">
@@ -44,8 +59,14 @@ const History = () => {
                             ...Loading
                         </h4>
                     ) : (
-                        <h4>User Orders</h4>
+                        <h4 className="text-center">
+                            {orders.length > 0
+                                ? "User purchase orders"
+                                : "No purchase orders"}
+                        </h4>
                     )}
+
+                    {showEachOrders()}
                 </div>
             </div>
         </div>
