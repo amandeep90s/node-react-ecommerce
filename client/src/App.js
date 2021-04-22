@@ -1,44 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
+import "react-toastify/dist/ReactToastify.css";
+import { LoadingOutlined } from "@ant-design/icons";
 
+// Using lazy
 // Components
-import Header from "./components/nav/Header";
-import UserRoute from "./components/routes/UserRoute";
-import AdminRoute from "./components/routes/AdminRoute";
-import SideDrawer from "./components/drawer/SideDrawer";
+const Header = lazy(() => import("./components/nav/Header"));
+const UserRoute = lazy(() => import("./components/routes/UserRoute"));
+const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
+const SideDrawer = lazy(() => import("./components/drawer/SideDrawer"));
 
 // Pages
-import Home from "./pages/Home";
-import CategoryHome from "./pages/category/CategoryHome";
-import Cart from "./pages/Cart";
-import SubCategoryHome from "./pages/sub/SubCategoryHome";
-import Product from "./pages/Product";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import RegisterComplete from "./pages/auth/RegisterComplete";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import History from "./pages/user/History";
-import Password from "./pages/user/Password";
-import Wishlist from "./pages/user/Wishlist";
-import Shop from "./pages/Shop";
-import Checkout from "./pages/Checkout";
-import Payment from "./pages/Payment";
+const Home = lazy(() => import("./pages/Home"));
+const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
+const Cart = lazy(() => import("./pages/Cart"));
+const SubCategoryHome = lazy(() => import("./pages/sub/SubCategoryHome"));
+const Product = lazy(() => import("./pages/Product"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const RegisterComplete = lazy(() => import("./pages/auth/RegisterComplete"));
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const History = lazy(() => import("./pages/user/History"));
+const Password = lazy(() => import("./pages/user/Password"));
+const Wishlist = lazy(() => import("./pages/user/Wishlist"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Payment = lazy(() => import("./pages/Payment"));
 
 // Admin Pages
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import CategoryCreate from "./pages/admin/category/CategoryCreate";
-import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
-import SubCategoryCreate from "./pages/admin/sub-category/SubCategoryCreate";
-import SubCategoryUpdate from "./pages/admin/sub-category/SubCategoryUpdate";
-import ProductCreate from "./pages/admin/product/ProductCreate";
-import ProductUpdate from "./pages/admin/product/ProductUpdate";
-import AllProducts from "./pages/admin/product/AllProducts";
-import CreateCoupon from "./pages/admin/coupon/CreateCoupon";
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const CategoryCreate = lazy(() =>
+    import("./pages/admin/category/CategoryCreate")
+);
+const CategoryUpdate = lazy(() =>
+    import("./pages/admin/category/CategoryUpdate")
+);
+const SubCategoryCreate = lazy(() =>
+    import("./pages/admin/sub-category/SubCategoryCreate")
+);
+const SubCategoryUpdate = lazy(() =>
+    import("./pages/admin/sub-category/SubCategoryUpdate")
+);
+const ProductCreate = lazy(() => import("./pages/admin/product/ProductCreate"));
+const ProductUpdate = lazy(() => import("./pages/admin/product/ProductUpdate"));
+const AllProducts = lazy(() => import("./pages/admin/product/AllProducts"));
+const CreateCoupon = lazy(() => import("./pages/admin/coupon/CreateCoupon"));
 
 const App = () => {
     const dispatch = useDispatch();
@@ -71,7 +81,15 @@ const App = () => {
     }, [dispatch]);
 
     return (
-        <>
+        <Suspense
+            fallback={
+                <div className="col text-center p-5">
+                    __ React Redux EC
+                    <LoadingOutlined />
+                    MMERCE __
+                </div>
+            }
+        >
             <Header />
             <SideDrawer />
             <ToastContainer />
@@ -153,7 +171,7 @@ const App = () => {
                     component={CreateCoupon}
                 />
             </Switch>
-        </>
+        </Suspense>
     );
 };
 
