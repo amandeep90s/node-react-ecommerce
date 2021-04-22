@@ -150,7 +150,7 @@ exports.createOrder = async (req, res) => {
 
 // create cod order
 exports.createCashOrder = async (req, res) => {
-    const { cod } = req.body;
+    const { cod, couponApplied } = req.body;
     // if cod is true, create order with status of cash on delivery
     if (!cod) {
         return res.status(400).send("Create cash order fail");
@@ -160,11 +160,19 @@ exports.createCashOrder = async (req, res) => {
 
     let userCart = await Cart.findOne({ orderedBy: user._id }).exec();
 
+    let finalAmount = 0;
+
+    if (couponApplied && userCart.totalAfterDiscount) {
+        finalAmount = userCart.totalAfterDiscount * 100;
+    } else {
+        finalAmount = userCart.cartTotal * 100;
+    }
+
     let newOrder = await new Order({
         products: userCart.products,
         paymentIntent: {
             id: uniqid(),
-            amount: userCart.cartTotal,
+            amount: finalAmount,
             currency: "inr",
             status: "Cash On Delivery",
             created: Date.now(),
@@ -195,6 +203,7 @@ exports.listOrders = async (req, res) => {
 
     let orders = await Order.find({ orderedBy: user._id })
         .populate("products.product")
+        .sort({ createdAt: -1 })
         .exec();
 
     res.json(orders);

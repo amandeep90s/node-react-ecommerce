@@ -57,8 +57,7 @@ const Invoice = ({ order }) => (
                 </Text>
                 {"\n"}
                 <Text>
-                    Total Paid: {"       "}
-                    {order.paymentIntent.amount}
+                    Total Paid: {"       "}${order.paymentIntent.amount / 100}
                 </Text>
             </Text>
 

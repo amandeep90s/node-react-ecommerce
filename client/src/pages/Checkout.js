@@ -23,6 +23,7 @@ const Checkout = ({ history }) => {
 
     const dispatch = useDispatch();
     const { user, cod } = useSelector((state) => ({ ...state }));
+    const couponTruOrFalse = useSelector((state) => state.coupon);
 
     useEffect(() => {
         getUserCart(user.token).then((res) => {
@@ -94,7 +95,6 @@ const Checkout = ({ history }) => {
         ));
 
     const applyDiscountCoupon = () => {
-        //
         applyCoupon(user.token, coupon).then((res) => {
             if (res.data) {
                 setTotalAfterDiscount(res.data);
@@ -142,28 +142,39 @@ const Checkout = ({ history }) => {
 
     const createCashOrder = () => {
         setLoading(true);
-        createCashOrderForUser(user.token, cod).then((res) => {
-            setLoading(false);
-            if (res.data.ok) {
-                toast.success("Order placed successfully");
-                // empty cart from local storage
-                if (typeof window !== "undefined") {
-                    localStorage.removeItem("cart");
+        createCashOrderForUser(user.token, cod, couponTruOrFalse).then(
+            (res) => {
+                setLoading(false);
+                if (res.data.ok) {
+                    toast.success("Order placed successfully");
+                    // empty cart from local storage
+                    if (typeof window !== "undefined") {
+                        localStorage.removeItem("cart");
+                    }
+                    // emprt cart from redux
+                    dispatch({
+                        type: "ADD_TO_CART",
+                        payload: [],
+                    });
+                    // reset coupon to false
+                    dispatch({
+                        type: "COUPON_APPLIED",
+                        payload: false,
+                    });
+                    // reset cod to false
+                    dispatch({
+                        type: "CASH_ON_DELIVERY",
+                        payload: false,
+                    });
+                    // empty cart from database
+                    emptyUserCart(user.token);
+                    // redirect
+                    setTimeout(() => {
+                        history.push("/user/history");
+                    }, 1500);
                 }
-                // emprt cart from redux
-                dispatch({
-                    type: "ADD_TO_CART",
-                    payload: [],
-                });
-                // reset coupon to false
-                dispatch({
-                    type: "COUPON_APPLIED",
-                    payload: false,
-                });
-                // empty cart from database
-                emptyUserCart(user.token);
             }
-        });
+        );
     };
 
     return (
@@ -211,12 +222,16 @@ const Checkout = ({ history }) => {
                                     onClick={createCashOrder}
                                 >
                                     {loading ? (
-                                        <Spin
-                                            indicator={<LoadingOutlined />}
-                                            className="mr-2"
-                                        />
-                                    ) : null}
-                                    Place Order
+                                        <>
+                                            <Spin
+                                                indicator={<LoadingOutlined />}
+                                                className="mr-2 text-white"
+                                            />
+                                            ...Loading
+                                        </>
+                                    ) : (
+                                        "Place Order"
+                                    )}
                                 </button>
                             ) : (
                                 <button
