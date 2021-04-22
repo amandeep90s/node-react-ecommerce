@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Card, Tabs, Tooltip } from "antd";
 import _ from "lodash";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
@@ -11,6 +11,8 @@ import ProductListItems from "./ProductListItems";
 import StarRating from "react-star-ratings";
 import RatingModal from "../modal/RatingModal";
 import { showAverage } from "../../functions/rating";
+import { addToWishlist } from "../../functions/user";
+import { toast } from "react-toastify";
 
 const { TabPane } = Tabs;
 
@@ -19,6 +21,9 @@ const SingleProduct = ({ product, onStarClick, star }) => {
     const [tooltip, setTooltip] = useState("Click to add");
     const { _id, title, images, description } = product;
 
+    let history = useHistory();
+    // redux
+    const { user } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {
@@ -50,6 +55,21 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                 type: "SET_VISIBLE",
                 payload: true,
             });
+        }
+    };
+
+    const handleAddToWishlist = (e) => {
+        e.preventDefault();
+
+        if (user !== null && user.token) {
+            addToWishlist(product._id, user.token).then((res) => {
+                if (res.data.ok) {
+                    toast.success("Added to wishlist");
+                    history.push("/user/wishlist");
+                }
+            });
+        } else {
+            toast.error("You are not logged in!!");
         }
     };
 
@@ -109,11 +129,11 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                                     : "Add To Cart"}
                             </a>
                         </Tooltip>,
-                        <Link to="/">
+                        <a href="/#" onClick={handleAddToWishlist}>
                             <HeartOutlined className="text-info" />
                             <br />
                             Add To Wishlist
-                        </Link>,
+                        </a>,
                         <RatingModal>
                             <StarRating
                                 name={_id}
