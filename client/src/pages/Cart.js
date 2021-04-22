@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ProductCardInCheckout from "../components/cards/ProductCardInCheckout";
 import { userCart } from "../functions/user";
 
 const Cart = ({ history }) => {
     const { user, cart } = useSelector((state) => ({ ...state }));
+    const dispatch = useDispatch();
 
     const getTotal = () => {
         return cart.reduce((currentValue, nextValue) => {
@@ -13,7 +14,18 @@ const Cart = ({ history }) => {
         }, 0);
     };
 
-    const saveOrderToDb = () => {
+    const saveOrderToDb = (cashOnDelivery = false) => {
+        if (cashOnDelivery) {
+            dispatch({
+                type: "CASH_ON_DELIVERY",
+                payload: true,
+            });
+        } else {
+            dispatch({
+                type: "CASH_ON_DELIVERY",
+                payload: false,
+            });
+        }
         userCart(cart, user.token)
             .then((res) => {
                 if (res.data.ok) history.push("/checkout");
@@ -72,24 +84,34 @@ const Cart = ({ history }) => {
                     Total : <strong>${getTotal()}</strong>
                     <hr />
                     {user ? (
-                        <button
-                            onClick={saveOrderToDb}
-                            className="btn btn-sm btn-primary btn-raised mt-2"
-                            disabled={!cart.length}
-                        >
-                            Proceed to Checkout
-                        </button>
-                    ) : (
-                        <button className="btn btn-sm btn-primary btn-raised mt-2">
-                            <Link
-                                to={{
-                                    pathname: "/login",
-                                    state: { from: "cart" },
-                                }}
+                        <>
+                            <button
+                                onClick={() => saveOrderToDb(false)}
+                                className="btn btn-sm btn-primary btn-raised mt-2 mr-2"
+                                disabled={!cart.length}
                             >
+                                Proceed to Checkout
+                            </button>
+
+                            <button
+                                onClick={() => saveOrderToDb(true)}
+                                className="btn btn-sm btn-warning btn-raised mt-2"
+                                disabled={!cart.length}
+                            >
+                                Pay Cash on Delivery
+                            </button>
+                        </>
+                    ) : (
+                        <Link
+                            to={{
+                                pathname: "/login",
+                                state: { from: "cart" },
+                            }}
+                        >
+                            <button className="btn btn-sm btn-primary btn-raised mt-2">
                                 Login to Checkout
-                            </Link>
-                        </button>
+                            </button>
+                        </Link>
                     )}
                 </div>
             </div>
