@@ -3,6 +3,7 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
 const Order = require("../models/order");
+const uniqueid = require("uniqueid");
 
 exports.userCart = async (req, res) => {
     const { cart } = req.body;
@@ -56,9 +57,12 @@ exports.getUserCart = async (req, res) => {
     let cart = await Cart.findOne({ orderedBy: user._id })
         .populate("products.product", "_id title price totalAfterDiscount")
         .exec();
-    const { products, cartTotal, totalAfterDiscount } = cart;
 
-    res.json({ products, cartTotal, totalAfterDiscount });
+    res.json({
+        products: cart.products,
+        cartTotal: cart.cartTotal,
+        totalAfterDiscount: cart.totalAfterDiscount,
+    });
 };
 
 // remove user cart
@@ -131,6 +135,47 @@ exports.createOrder = async (req, res) => {
 
     // decrement quantity, increment sold
     let bulkOption = products.map((item) => {
+        return {
+            updateOne: {
+                filter: { _id: item.product._id },
+                update: { $inc: { quantity: -item.count, sold: +item.count } },
+            },
+        };
+    });
+    // bulk update
+    let updated = await Product.bulkWrite(bulkOption, {});
+
+    res.json({ ok: true });
+};
+
+// create cod order
+exports.createCashOrder = async (req, res) => {
+    const { cod } = req.body;
+    // if cod is true, create order with status of cash on delivery
+    if (!cod) {
+        return res.status(400).send("Create cash order fail");
+    }
+
+    const user = await User.findOne({ email: req.user.email }).exec();
+
+    let userCart = await Cart.findOne({ orderedBy: user._id }).exec();
+
+    let newOrder = await new Order({
+        products: userCart.products,
+        paymentIntent: {
+            id: uniqueid(),
+            amount: userCart.cartTotal,
+            currency: "INR",
+            status: "Cash On Delivery",
+            created: Date.now(),
+            payment_method_types: ["cash"],
+        },
+        orderStatus: "Cash On Delivery",
+        orderedBy: user._id,
+    }).save();
+
+    // decrement quantity, increment sold
+    let bulkOption = userCart.products.map((item) => {
         return {
             updateOne: {
                 filter: { _id: item.product._id },

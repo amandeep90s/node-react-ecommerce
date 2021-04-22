@@ -15,6 +15,9 @@
 .not-processed {
     border: solid 2px brown;
 }
+.cash-on-delivery {
+    border: solid 2px pink;
+}
 .dispatched {
     border: solid 2px navy;
 }

@@ -12,6 +12,7 @@ const {
     userCart,
     getUserCart,
     saveAddress,
+    createCashOrder,
     createOrder,
     listOrders,
     addToWishlist,
@@ -26,7 +27,8 @@ router.delete("/user/cart", authCheck, emptyCart);
 router.post("/user/address", authCheck, saveAddress);
 
 // order
-router.post("/user/order", authCheck, createOrder);
+router.post("/user/order", authCheck, createOrder); //stripe
+router.post("/user/cash-order", authCheck, createCashOrder); //cod
 router.get("/user/orders", authCheck, listOrders);
 
 // coupon

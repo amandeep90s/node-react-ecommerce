@@ -52,6 +52,14 @@ export const createOrder = async (stripeResponse, authtoken) =>
         { headers: { authtoken } }
     );
 
+// create order with cash on delivery
+export const createCashOrderForUser = async (authtoken, cod) =>
+    await axios.post(
+        `${process.env.REACT_APP_API_URL}/user/cash-order`,
+        { cod },
+        { headers: { authtoken } }
+    );
+
 // list user orders
 export const getUserOrders = async (authtoken) =>
     await axios.get(`${process.env.REACT_APP_API_URL}/user/orders`, {
