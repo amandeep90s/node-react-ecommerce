@@ -8,6 +8,8 @@ import {
     createCashOrderForUser,
 } from "../functions/user";
 import { toast } from "react-toastify";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Checkout = ({ history }) => {
     const [products, setProducts] = useState([]);
@@ -17,6 +19,7 @@ const Checkout = ({ history }) => {
     const [coupon, setCoupon] = useState("");
     const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
     const [discountError, setDiscountError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
     const { user, cod } = useSelector((state) => ({ ...state }));
@@ -73,7 +76,7 @@ const Checkout = ({ history }) => {
             <button
                 className="btn btn-primary btn-info btn-raised mt-2"
                 onClick={saveAddressToDb}
-                disabled={!address.length}
+                disabled={address && !address.length}
             >
                 Save
             </button>
@@ -138,8 +141,11 @@ const Checkout = ({ history }) => {
     );
 
     const createCashOrder = () => {
+        setLoading(true);
         createCashOrderForUser(user.token, cod).then((res) => {
+            setLoading(false);
             if (res.data.ok) {
+                toast.success("Order placed successfully");
                 // empty cart from local storage
                 if (typeof window !== "undefined") {
                     localStorage.removeItem("cart");
@@ -197,9 +203,19 @@ const Checkout = ({ history }) => {
                             {cod ? (
                                 <button
                                     className="btn btn-primary btn-raised"
-                                    disabled={!addressSaved || !products.length}
+                                    disabled={
+                                        !addressSaved ||
+                                        !products.length ||
+                                        loading
+                                    }
                                     onClick={createCashOrder}
                                 >
+                                    {loading ? (
+                                        <Spin
+                                            indicator={<LoadingOutlined />}
+                                            className="mr-2"
+                                        />
+                                    ) : null}
                                     Place Order
                                 </button>
                             ) : (

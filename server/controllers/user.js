@@ -3,7 +3,7 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
 const Order = require("../models/order");
-const uniqueid = require("uniqueid");
+const uniqid = require("uniqid");
 
 exports.userCart = async (req, res) => {
     const { cart } = req.body;
@@ -50,7 +50,7 @@ exports.userCart = async (req, res) => {
     res.json({ ok: true });
 };
 
-// get iser cart information
+// get user cart information
 exports.getUserCart = async (req, res) => {
     const user = await User.findOne({ email: req.user.email }).exec();
 
@@ -163,9 +163,9 @@ exports.createCashOrder = async (req, res) => {
     let newOrder = await new Order({
         products: userCart.products,
         paymentIntent: {
-            id: uniqueid(),
+            id: uniqid(),
             amount: userCart.cartTotal,
-            currency: "INR",
+            currency: "inr",
             status: "Cash On Delivery",
             created: Date.now(),
             payment_method_types: ["cash"],

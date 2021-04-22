@@ -22,6 +22,6 @@
         "nodemon": "^2.0.7",
         "slugify": "^1.5.0",
         "stripe": "^8.144.0",
-        "uniqueid": "^1.0.0"
+        "uniqid": "^5.3.0"
     }
 }

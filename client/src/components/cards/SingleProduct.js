@@ -26,7 +26,8 @@ const SingleProduct = ({ product, onStarClick, star }) => {
     const { user } = useSelector((state) => ({ ...state }));
     const dispatch = useDispatch();
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e) => {
+        e.preventDefault();
         // create card array
         let cart = [];
         if (typeof window !== "undefined") {

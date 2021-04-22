@@ -16,7 +16,8 @@ const ProductCard = ({ product }) => {
     // redux
     const dispatch = useDispatch();
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e) => {
+        e.preventDefault();
         // create card array
         let cart = [];
         if (typeof window !== "undefined") {
